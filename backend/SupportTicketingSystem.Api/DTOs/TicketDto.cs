@@ -2,9 +2,6 @@ using SupportTicketingSystem.Domain;
 
 namespace SupportTicketingSystem.Api.DTOs;
 
-/// <summary>
-/// DTO for ticket response
-/// </summary>
 public class TicketDto
 {
     public int Id { get; set; }

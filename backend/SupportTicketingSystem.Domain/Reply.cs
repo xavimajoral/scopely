@@ -1,8 +1,5 @@
 namespace SupportTicketingSystem.Domain;
 
-/// <summary>
-/// Represents a reply to a support ticket
-/// </summary>
 public class Reply
 {
     /// <summary>

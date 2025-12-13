@@ -2,9 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SupportTicketingSystem.Api.DTOs;
 
-/// <summary>
-/// DTO for creating a new ticket
-/// </summary>
 public class CreateTicketDto
 {
     [Required]

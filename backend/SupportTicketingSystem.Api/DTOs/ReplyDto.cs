@@ -1,8 +1,5 @@
 namespace SupportTicketingSystem.Api.DTOs;
 
-/// <summary>
-/// DTO for reply response
-/// </summary>
 public class ReplyDto
 {
     public int Id { get; set; }

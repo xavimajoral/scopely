@@ -5,9 +5,6 @@ using SupportTicketingSystem.Services;
 
 namespace SupportTicketingSystem.Api.Controllers;
 
-/// <summary>
-/// Controller for managing support tickets
-/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class TicketsController : ControllerBase

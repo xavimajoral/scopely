@@ -2,9 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SupportTicketingSystem.Api.DTOs;
 
-/// <summary>
-/// DTO for creating a new reply
-/// </summary>
 public class CreateReplyDto
 {
     [Required]
@@ -18,9 +15,6 @@ public class CreateReplyDto
     [StringLength(50)]
     public string UserId { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Indicates if this reply is from a support agent
-    /// </summary>
     public bool IsFromAgent { get; set; } = true;
 }
 
