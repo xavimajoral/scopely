@@ -1,0 +1,38 @@
+image: gitpod/workspace-dotnet
+
+tasks:
+  - name: Backend
+    init: |
+      cd backend
+      dotnet restore
+      dotnet build
+    command: |
+      cd backend/SupportTicketingSystem.Api
+      dotnet run
+
+  - name: Frontend
+    init: |
+      npm install -g pnpm
+      cd frontend
+      pnpm install
+    command: |
+      cd frontend
+      pnpm dev
+
+ports:
+  - port: 5000
+    onOpen: open-browser
+    visibility: public
+    name: Backend API
+  - port: 5173
+    onOpen: open-browser
+    visibility: public
+    name: Frontend Dev Server
+
+vscode:
+  extensions:
+    - ms-dotnettools.csharp
+    - dbaeumer.vscode-eslint
+    - esbenp.prettier-vscode
+    - ms-playwright.playwright
+

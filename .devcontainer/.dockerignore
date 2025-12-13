@@ -1,0 +1,13 @@
+node_modules/
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+.git/
+dist/
+build/
+test-results/
+playwright-report/
+*.log
+
