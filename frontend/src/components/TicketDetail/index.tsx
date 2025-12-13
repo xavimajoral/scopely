@@ -104,30 +104,21 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
           const isInitial = 'isInitial' in item && item.isInitial;
 
           return (
-            <div
-              key={item.id}
-              className={`${styles.replyItem} ${isAgent ? styles.agent : ''}`}
-            >
-              // Customer message
+            <div key={item.id} className={`${styles.replyItem} ${isAgent ? styles.agent : ''}`}>
+              {/*Customer message*/}
               {!isAgent && (
                 <div className={styles.avatar}>
                   {isInitial ? (
                     <DicebearAvatar seed={String(ticket.id)} />
                   ) : (
-                    <img
-                      width={64}
-                      src={AGENT_AVATAR_URL}
-                      alt="avatar"
-                    />
+                    <img width={64} src={AGENT_AVATAR_URL} alt="avatar" />
                   )}
                 </div>
               )}
-              // Agent message
+              {/*Agent message*/}
               <div className={styles.replyContent}>
-                <span className={styles.replyAuthor}>
-                  {isAgent ? 'CS Agent' : item.username}
-                  {!isAgent && <span className={styles.userId}> {item.userId}</span>}
-                </span>
+                <span className={styles.replyAuthor}>{isAgent ? 'CS Agent' : item.username}</span>
+                {!isAgent && <span className={styles.userId}> {item.userId}</span>}
                 <div
                   className={`${styles.replyMessage} ${isAgent ? styles.replyMessageAgent : ''}`}
                 >
@@ -139,11 +130,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
               </div>
               {isAgent && (
                 <div className={styles.avatar}>
-                  <img
-                    width={64}
-                    src={AGENT_AVATAR_URL}
-                    alt="avatar"
-                  />
+                  <img width={64} src={AGENT_AVATAR_URL} alt="avatar" />
                 </div>
               )}
             </div>

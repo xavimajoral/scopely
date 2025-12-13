@@ -67,7 +67,7 @@ const TicketList: React.FC<TicketListProps> = ({
   return (
     <div className={styles.ticketList}>
       <button className={styles.newTicketButton} onClick={onCreateNew}>
-        New ticket
+        + New ticket
       </button>
       <div className={styles.ticketsContainer}>
         {tickets.length === 0 ? (

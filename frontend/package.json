@@ -9,31 +9,49 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css}\""
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css}\"",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run -t \"Integration\"",
+    "test:e2e": "pnpm exec playwright test",
+    "test:e2e:ui": "pnpm exec playwright test --ui",
+    "test:e2e:headed": "pnpm exec playwright test --headed",
+    "test:e2e:debug": "pnpm exec playwright test --debug",
+    "test:e2e:report": "pnpm exec playwright show-report"
   },
   "dependencies": {
     "@dicebear/collection": "^9.2.4",
     "@dicebear/core": "^9.2.4",
     "@tanstack/react-query": "^5.90.12",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@tanstack/eslint-plugin-query": "^5.91.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/ui": "^2.1.8",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "jsdom": "^25.0.1",
+    "msw": "^2.6.4",
+    "@playwright/test": "^1.57.0",
     "prettier": "3.7.4",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vitest": "^2.1.8"
   }
 }
