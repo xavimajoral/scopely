@@ -1,46 +1,107 @@
-# Getting Started with Create React App
+# 🚀 Frontend Development
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> **Built with modern web technologies for blazing-fast development and production builds**
 
-## Available Scripts
+Welcome to the frontend of our Support Ticketing System! This is a cutting-edge React application powered by TypeScript and Vite, designed for speed, type safety, and developer experience.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## ⚡ Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Core Technologies
+- **⚛️ React 19** - The latest React with cutting-edge features
+- **📘 TypeScript** - Type-safe development for fewer bugs
+- **⚡ Vite 7** - Lightning-fast build tool and dev server
+- **🎨 CSS Modules** - Scoped styling for maintainable components
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Key Features
+- **🔄 React Compiler** - Automatic optimization and memoization
+- **🛠️ Hot Module Replacement (HMR)** - Instant updates during development
+- **📦 Tree-shaking** - Optimized bundle sizes
+- **🎯 Path Aliases** - Clean imports with `@/` prefix
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🎯 Getting Started
 
-### `npm run build`
+### Prerequisites
+- **Node.js** (v18 or higher recommended)
+- **pnpm** package manager ([Install pnpm](https://pnpm.io/installation))
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation & Development
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+# Install dependencies
+pnpm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Start development server
+pnpm dev
 
-### `npm run eject`
+# Build for production
+pnpm build
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Preview production build
+pnpm preview
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The development server will start at `http://localhost:5173` (or the next available port).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+---
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 🧠 React Compiler
 
-## Learn More
+This project uses the **React Compiler** for automatic optimization. This means:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+✨ **No manual memoization needed** - The compiler handles `useMemo`, `useCallback`, and `React.memo` automatically  
+⚡ **Better performance** - Automatic optimization of re-renders  
+🎯 **Cleaner code** - Focus on logic, not optimization
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> **Note:** The React Compiler may impact Vite dev & build performance, but the runtime benefits are worth it!
+
+Learn more: [React Compiler Documentation](https://react.dev/learn/react-compiler)
+
+---
+
+## 🎨 Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/     # React components
+│   ├── hooks/          # Custom React hooks
+│   ├── services/       # API services
+│   ├── types.ts        # TypeScript type definitions
+│   └── main.tsx        # Application entry point
+├── vite.config.ts      # Vite configuration
+└── tsconfig.json       # TypeScript configuration
+```
+
+---
+
+## 🔧 Development Tools
+
+### Code Quality
+- **ESLint** - Linting for code quality
+- **Prettier** - Code formatting
+- **TypeScript** - Static type checking
+
+### Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build for production |
+| `pnpm preview` | Preview production build |
+| `pnpm lint` | Run ESLint |
+| `pnpm format` | Format code with Prettier |
+| `pnpm format:check` | Check code formatting |
+
+---
+
+## 🎯 Best Practices
+
+- **Use CSS Modules** for component styling
+- **Leverage React Compiler** - don't manually memoize
+- **Type everything** - TypeScript is our friend
+- **Follow component structure** - keep components focused and reusable
+- **Use path aliases** - import with `@/` prefix

@@ -1,12 +1,22 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using SupportTicketingSystem.Data;
 using SupportTicketingSystem.Data.Repositories;
 using SupportTicketingSystem.Services;
 
+// Custom naming policy for UPPER_SNAKE_CASE enum serialization
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter(namingPolicy: new UpperSnakeCaseNamingPolicy()));
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -62,3 +72,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Custom naming policy for UPPER_SNAKE_CASE enum serialization
+public class UpperSnakeCaseNamingPolicy : JsonNamingPolicy
+{
+    public override string ConvertName(string name)
+    {
+        // Convert PascalCase to UPPER_SNAKE_CASE
+        var result = Regex.Replace(name, "(?<!^)([A-Z])", "_$1");
+        return result.ToUpperInvariant();
+    }
+}

@@ -1,211 +1,272 @@
-# Customer Support Ticketing System
+# 🎫 Customer Support Ticketing System
 
-A full-stack web application for managing customer support tickets, built with .NET 8 backend and React TypeScript frontend.
+> **A modern full-stack application for managing customer support tickets with real-time updates and seamless agent workflows**
 
-## Project Overview
+A comprehensive ticketing system built with cutting-edge technologies, designed to streamline customer support operations. Support agents can efficiently view, respond to, and manage customer inquiries with an intuitive interface and automatic status management.
 
-This application provides a comprehensive ticketing system for customer support operations. Support agents can view unresolved tickets, respond to customer inquiries, and manage ticket statuses. The system automatically updates ticket statuses based on agent interactions.
+---
 
-### Key Features
+## ✨ Key Features
 
-- **Ticket Management**: Create, view, and manage support tickets
-- **Reply Thread**: Chronological conversation thread for each ticket
-- **Status Management**: 
-  - Tickets start as "Open"
-  - Automatically change to "In Resolution" when an agent replies
-  - Can be manually marked as "Resolved"
-- **Real-time Updates**: Frontend automatically refreshes ticket list
-- **Clean Architecture**: Separation of concerns with Repository and Service layers
+- **🎫 Ticket Management** - Create, view, and manage support tickets effortlessly
+- **💬 Conversation Threads** - Chronological reply threads for each ticket
+- **🔄 Smart Status Management** - Automatic status transitions based on agent interactions
+  - Tickets start as **"Open"**
+  - Automatically change to **"In Resolution"** when an agent replies
+  - Can be manually marked as **"Resolved"**
+- **⚡ Real-time Updates** - Frontend automatically refreshes ticket list every 30 seconds
+- **🏗️ Clean Architecture** - Separation of concerns with Repository and Service layers
+- **🎨 Modern UI** - Beautiful, responsive interface built with React and CSS Modules
 
-## Architecture
+---
 
-### Backend (.NET 8)
+## 🏗️ Architecture
 
-The backend follows clean architecture principles with the following layers:
+### Backend Stack (.NET 8)
 
-- **Domain**: Core business entities (Ticket, Reply, TicketStatus)
-- **Data**: Entity Framework Core with SQLite, Repository pattern implementation
-- **Services**: Business logic layer (TicketService)
-- **Api**: RESTful API controllers with DTOs
+Built with clean architecture principles and modern .NET features:
 
-### Frontend (React + TypeScript)
+- **📦 Domain Layer** - Core business entities (Ticket, Reply, TicketStatus)
+- **💾 Data Layer** - Entity Framework Core with SQLite, Repository pattern
+- **⚙️ Services Layer** - Business logic and ticket management
+- **🌐 API Layer** - RESTful API controllers with DTOs
 
-- **Components**: Modular React components for UI
-- **Services**: API service layer for backend communication
-- **State Management**: React hooks for local state management
-- **TypeScript**: Full type safety throughout the application
+### Frontend Stack (React + TypeScript)
 
-## Prerequisites
+Modern React application with type safety and performance optimizations:
 
-- .NET 8 SDK
-- Node.js 16+ and npm
-- SQLite (included with .NET)
+- **⚛️ React 19** - Latest React with cutting-edge features
+- **📘 TypeScript** - Full type safety throughout
+- **⚡ Vite 7** - Lightning-fast build tool and dev server
+- **🎨 CSS Modules** - Scoped styling for maintainable components
+- **🔄 React Compiler** - Automatic optimization and memoization
+- **📡 React Query** - Efficient data fetching and caching
 
-## Setup Instructions
+---
 
-### Backend Setup
+## 🚀 Quick Start
 
-1. Navigate to the backend directory:
+### Prerequisites
+
+- **.NET 8 SDK** - [Download here](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
+- **pnpm** - [Install pnpm](https://pnpm.io/installation)
+- **SQLite** - Included with .NET (no separate installation needed)
+
+### 🎯 Getting Started
+
+#### 1️⃣ Backend Setup
+
+```bash
+# Navigate to backend directory
+cd backend
+
+# Restore NuGet packages
+dotnet restore
+
+# Build the solution
+dotnet build
+
+# Run the API
+cd SupportTicketingSystem.Api
+dotnet run
+```
+
+**Backend will be available at:**
+- 🌐 API: `http://localhost:5000`
+- 📚 Swagger UI: `http://localhost:5000/swagger`
+
+#### 2️⃣ Frontend Setup
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+```
+
+**Frontend will be available at:** `http://localhost:5173`
+
+#### 3️⃣ Database
+
+The SQLite database is **automatically created** on first run. The database file (`support_tickets.db`) will be created in the `SupportTicketingSystem.Api` directory.
+
+> 💡 **Tip:** To reset the database, simply delete the `support_tickets.db` file and restart the API.
+
+---
+
+## 🎮 Running the Application
+
+1. **Start Backend** (from `backend/SupportTicketingSystem.Api`):
    ```bash
-   cd backend
-   ```
-
-2. Restore NuGet packages:
-   ```bash
-   dotnet restore
-   ```
-
-3. Build the solution:
-   ```bash
-   dotnet build
-   ```
-
-4. Run the API:
-   ```bash
-   cd SupportTicketingSystem.Api
    dotnet run
    ```
 
-   The API will be available at:
-   - HTTP: `http://localhost:5000`
-   - Swagger UI: `http://localhost:5000/swagger`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
+2. **Start Frontend** (from `frontend`):
    ```bash
-   cd frontend
+   pnpm dev
    ```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+3. **Open Browser**: Navigate to `http://localhost:5173`
 
-3. Start the development server:
-   ```bash
-   npm start
-   ```
+---
 
-   The frontend will be available at `http://localhost:3000`
-
-### Database Setup
-
-The SQLite database is automatically created on first run. The database file (`support_tickets.db`) will be created in the `SupportTicketingSystem.Api` directory.
-
-To reset the database, simply delete the `support_tickets.db` file and restart the API.
-
-## Running the Application
-
-1. Start the backend API (from `backend/SupportTicketingSystem.Api`):
-   ```bash
-   dotnet run
-   ```
-
-2. Start the frontend (from `frontend`):
-   ```bash
-   npm start
-   ```
-
-3. Open your browser and navigate to `http://localhost:3000`
-
-## Running Tests
+## 🧪 Testing
 
 ### Backend Tests
 
-From the `backend` directory:
+Run all unit tests from the `backend` directory:
 
 ```bash
 dotnet test
 ```
 
-This will run all unit tests for the business logic, including:
-- Ticket creation
-- Status updates
-- Reply handling
-- Status transition rules
+**Test Coverage:**
+- ✅ Ticket creation
+- ✅ Status updates
+- ✅ Reply handling
+- ✅ Status transition rules
 
-## API Endpoints
+---
+
+## 📡 API Endpoints
 
 ### Tickets
 
-- `GET /api/tickets` - Get all unresolved tickets
-- `GET /api/tickets/{id}` - Get a ticket by ID with replies
-- `POST /api/tickets` - Create a new ticket
-- `POST /api/tickets/{id}/resolve` - Mark a ticket as resolved
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/tickets` | Get all unresolved tickets |
+| `GET` | `/api/tickets/{id}` | Get a ticket by ID with replies |
+| `POST` | `/api/tickets` | Create a new ticket |
+| `POST` | `/api/tickets/{id}/resolve` | Mark a ticket as resolved |
 
 ### Replies
 
-- `POST /api/tickets/{id}/replies` - Add a reply to a ticket
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/tickets/{id}/replies` | Add a reply to a ticket |
 
-## Assumptions
+---
 
-1. **User Authentication**: The system assumes user authentication is handled externally. Username and User ID are provided as part of ticket/reply creation.
-
-2. **Agent Identification**: The frontend hardcodes agent information (username: "CS Agent", userId: "agent001"). In a production system, this would come from authentication context.
-
-3. **Customer Information**: Customer username and User ID are provided when creating tickets. In production, this would typically come from a user management system.
-
-4. **Database**: SQLite is used for simplicity. The database is created automatically on first run.
-
-5. **CORS**: The backend is configured to allow requests from common frontend development ports (3000, 5173, 4200). Adjust CORS settings in `Program.cs` for production.
-
-6. **Status Transitions**: 
-   - Tickets start as "Open"
-   - When an agent replies to an "Open" ticket, it automatically becomes "In Resolution"
-   - Tickets can only be manually marked as "Resolved"
-   - Once resolved, tickets no longer appear in the unresolved tickets list
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 SupportTicketingSystem/
 ├── backend/
-│   ├── SupportTicketingSystem.Domain/      # Domain models
+│   ├── SupportTicketingSystem.Domain/      # Domain models & entities
 │   ├── SupportTicketingSystem.Data/        # EF Core, Repositories
-│   ├── SupportTicketingSystem.Services/    # Business logic
-│   ├── SupportTicketingSystem.Api/         # REST API
+│   ├── SupportTicketingSystem.Services/    # Business logic layer
+│   ├── SupportTicketingSystem.Api/         # REST API & Controllers
 │   └── SupportTicketingSystem.Tests/        # Unit tests
 ├── frontend/
 │   ├── src/
 │   │   ├── components/                     # React components
-│   │   ├── services/                       # API service
-│   │   └── types.ts                        # TypeScript types
+│   │   ├── hooks/                          # Custom React hooks
+│   │   ├── services/                       # API service layer
+│   │   └── types.ts                        # TypeScript definitions
 │   └── package.json
 └── README.md
 ```
 
-## Code Quality
+---
 
-- **Clean Code Principles**: Clear separation of concerns, single responsibility
-- **Design Patterns**: Repository pattern, Service layer, Dependency Injection
-- **Documentation**: Inline XML comments for public APIs
-- **Testing**: Unit tests for core business logic with 100% coverage of status update rules
-- **Type Safety**: Full TypeScript coverage in frontend
+## 🎯 Status Transitions
 
-## Development Notes
+The system follows these status transition rules:
 
-- The frontend automatically refreshes the ticket list every 30 seconds
-- The API uses Entity Framework Core migrations (auto-created on first run)
-- CORS is configured for development. Update for production deployment
-- The SQLite database file is included in `.gitignore` by default
+```
+┌─────────┐
+│  Open   │ ──────────────┐
+└─────────┘               │
+                          │ Agent replies
+                          ▼
+                  ┌──────────────────┐
+                  │ In Resolution    │
+                  └──────────────────┘
+                          │
+                          │ Manual resolve
+                          ▼
+                  ┌──────────────────┐
+                  │   Resolved       │
+                  └──────────────────┘
+```
 
-## Future Enhancements
+- **Open** → **In Resolution**: Automatic when agent replies
+- **In Resolution** → **Resolved**: Manual action by agent
+- Once resolved, tickets no longer appear in the unresolved tickets list
+
+---
+
+## ⚙️ Configuration & Assumptions
+
+### Development Assumptions
+
+1. **🔐 Authentication** - User authentication is handled externally. Username and User ID are provided as part of ticket/reply creation.
+
+2. **👤 Agent Identification** - Frontend hardcodes agent info (`username: "CS Agent"`, `userId: "agent001"`). In production, this would come from authentication context.
+
+3. **👥 Customer Information** - Customer username and User ID are provided when creating tickets. In production, this would come from a user management system.
+
+4. **💾 Database** - SQLite is used for simplicity. Database is created automatically on first run.
+
+5. **🌐 CORS** - Backend configured to allow requests from common frontend dev ports (3000, 5173, 4200). Adjust CORS settings in `Program.cs` for production.
+
+---
+
+## 🎨 Code Quality
+
+- ✅ **Clean Code Principles** - Clear separation of concerns, single responsibility
+- ✅ **Design Patterns** - Repository pattern, Service layer, Dependency Injection
+- ✅ **Documentation** - Inline XML comments for public APIs
+- ✅ **Testing** - Unit tests for core business logic with 100% coverage of status update rules
+- ✅ **Type Safety** - Full TypeScript coverage in frontend
+- ✅ **Code Formatting** - Prettier for consistent code style
+- ✅ **Linting** - ESLint for code quality
+
+---
+
+## 🚀 Development Notes
+
+- 🔄 Frontend automatically refreshes ticket list every 30 seconds
+- 📦 API uses Entity Framework Core migrations (auto-created on first run)
+- 🌐 CORS configured for development - update for production deployment
+- 💾 SQLite database file is included in `.gitignore` by default
+- ⚡ React Compiler enabled for automatic optimization
+
+---
+
+## 🔮 Future Enhancements
 
 Potential improvements for production:
 
-1. User authentication and authorization
-2. Real-time updates using SignalR
-3. Email notifications
-4. Ticket assignment to specific agents
-5. Priority levels and categories
-6. Search and filtering capabilities
-7. File attachments
-8. Ticket history and audit logs
-9. Reporting and analytics
-10. Multi-tenant support
+- 🔐 User authentication and authorization
+- 📡 Real-time updates using SignalR
+- 📧 Email notifications
+- 👥 Ticket assignment to specific agents
+- ⚡ Priority levels and categories
+- 🔍 Search and filtering capabilities
+- 📎 File attachments
+- 📊 Ticket history and audit logs
+- 📈 Reporting and analytics
+- 🏢 Multi-tenant support
 
-## License
+---
+
+## 📚 Documentation
+
+- [Frontend README](./frontend/README.md) - Detailed frontend documentation
+- [Backend API Documentation](http://localhost:5000/swagger) - Available when backend is running
+
+---
+
+## 📄 License
 
 This project is created as a technical exercise.
 
+---
+
+**Built with ❤️ using .NET 8 and React 19**

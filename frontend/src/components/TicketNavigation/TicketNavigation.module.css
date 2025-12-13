@@ -1,0 +1,32 @@
+.sidebarContainer {
+  display: flex;
+  position: relative;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.resizeHandle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  cursor: col-resize;
+  background-color: transparent;
+  z-index: 10;
+
+  &:hover {
+    background-color: #1469db;
+  }
+}
+
+.resizeHandle.resizing {
+  background-color: #1469db;
+  width: 2px;
+}
+
+/* Global class for body when resizing */
+:global(body.resizingSidebar) {
+  cursor: col-resize;
+  user-select: none;
+}

@@ -1,0 +1,43 @@
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.error {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+
+  button {
+    background: none;
+    border: none;
+    color: #c62828;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+  }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 16px;
+  color: #757575;
+}
+
+.dashboard {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}

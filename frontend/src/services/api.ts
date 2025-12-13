@@ -1,6 +1,6 @@
-import { Ticket, CreateTicketDto, CreateReplyDto, Reply } from '../types';
+import type { Ticket, CreateTicketDto, CreateReplyDto, Reply } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://localhost:7000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 /**
  * API service for interacting with the backend
