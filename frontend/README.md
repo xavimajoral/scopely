@@ -105,6 +105,7 @@ frontend/
 | `pnpm test:ui` | Run unit tests with UI |
 | `pnpm test:run` | Run unit tests once |
 | `pnpm test:coverage` | Run unit tests with coverage report |
+| `pnpm test:integration` | Run integration tests only |
 | `pnpm test:e2e` | Run end-to-end tests |
 | `pnpm test:e2e:ui` | Run E2E tests with UI |
 | `pnpm test:e2e:headed` | Run E2E tests in headed mode |
@@ -167,7 +168,8 @@ Integration tests run with the same commands as unit tests:
 pnpm test
 
 # Run only integration tests
-pnpm test:integration"
+pnpm test:integration
+```
 ```
 
 #### Writing Integration Tests

@@ -33,15 +33,14 @@ Create `.devcontainer/devcontainer.json` in your repo root:
 ```json
 {
   "name": "Support Ticketing System",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/devcontainers/features/dotnet:2": {
       "version": "8.0"
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    }
   },
   "customizations": {
     "vscode": {
@@ -370,6 +369,11 @@ Then access via your Mac's IP address in Safari on iOS.
 ## 🔧 Troubleshooting
 
 ### Codespaces Issues
+
+**"No space left on device" error:**
+- The `universal:2` image is very large and can exceed free tier limits
+- **Solution:** Use `mcr.microsoft.com/devcontainers/base:ubuntu` instead (already configured)
+- This uses a lighter base image with only essential tools
 
 **Port not accessible:**
 - Check port forwarding in Codespaces

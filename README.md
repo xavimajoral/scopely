@@ -14,9 +14,10 @@ A comprehensive ticketing system built with cutting-edge technologies, designed 
   - Tickets start as **"Open"**
   - Automatically change to **"In Resolution"** when an agent replies
   - Can be manually marked as **"Resolved"**
-- **⚡ Real-time Updates** - Frontend automatically refreshes ticket list every 30 seconds
+- **⚡ Real-time Updates** - Automatic synchronization between backend and frontend every 30 seconds and on window focus
 - **🏗️ Clean Architecture** - Separation of concerns with Repository and Service layers
 - **🎨 Modern UI** - Beautiful, responsive interface built with React and CSS Modules
+- **📏 Resizable Navigation** - Drag the navigation list's right edge to adjust width (persisted in localStorage)
 
 ---
 
@@ -35,12 +36,16 @@ Built with clean architecture principles and modern .NET features:
 
 Modern React application with type safety and performance optimizations:
 
-- **⚛️ React 19** - Latest React with cutting-edge features
+- **⚛️ React 19.2.3** - Latest React with cutting-edge features and security patches
 - **📘 TypeScript** - Full type safety throughout
 - **⚡ Vite 7** - Lightning-fast build tool and dev server
 - **🎨 CSS Modules** - Scoped styling for maintainable components
 - **🔄 React Compiler** - Automatic optimization and memoization
 - **📡 React Query** - Efficient data fetching and caching
+
+> 🔒 **Security Update**: React and React-DOM have been upgraded to version 19.2.3 to address security vulnerabilities discovered last week.
+
+📖 **For detailed frontend documentation, see [Frontend README](./frontend/README.md)**
 
 ---
 
@@ -231,11 +236,12 @@ The system follows these status transition rules:
 
 ## 🚀 Development Notes
 
-- 🔄 Frontend automatically refreshes ticket list every 30 seconds
+- 🔄 **Backend-Frontend Sync** - Automatic synchronization every 30 seconds and on window focus
 - 📦 API uses Entity Framework Core migrations (auto-created on first run)
 - 🌐 CORS configured for development - update for production deployment
 - 💾 SQLite database file is included in `.gitignore` by default
 - ⚡ React Compiler enabled for automatic optimization
+- 🔒 React 19.2.3 - Upgraded to address security vulnerabilities (January 2025)
 
 ---
 
@@ -259,6 +265,8 @@ Potential improvements for production:
 ## 📚 Documentation
 
 - [Frontend README](./frontend/README.md) - Detailed frontend documentation
+- [Deployment Guide](./DEPLOYMENT.md) - Complete guide for deploying and sharing the application
+- [Remote Development Guide](./REMOTE_DEVELOPMENT.md) - Develop on iOS/mobile devices (GitHub Codespaces, Remote Desktop, etc.)
 - [Backend API Documentation](http://localhost:5000/swagger) - Available when backend is running
 
 ---
