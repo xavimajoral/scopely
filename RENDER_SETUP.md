@@ -41,7 +41,7 @@ Render will create two services:
 - **Backend** (Web Service) - Your .NET API
 - **Frontend** (Static Site) - Your React app
 
-The `render.yaml` file is pre-configured, but you may need to update the frontend environment variable after the backend is deployed.
+The `render.yaml` file is pre-configured. **Note:** On the free tier, persistent disks are not available, so the SQLite database will reset on each deployment. For production, consider upgrading to a paid plan or migrating to PostgreSQL.
 
 ### Step 4: Update Frontend API URL
 
@@ -96,20 +96,17 @@ If you prefer to set up services manually:
 
 5. Click **"Create Web Service"**
 
-#### Add Persistent Disk (for SQLite)
+#### Persistent Disk (Not Available on Free Tier)
 
-⚠️ **Important**: Render's filesystem is ephemeral. To persist SQLite database:
+⚠️ **Important**: 
+- **Free Tier**: Persistent disks are **not available** on the free tier. The SQLite database will reset on each deployment.
+- **Paid Plans**: If you upgrade to a paid plan, you can add a persistent disk:
+  1. Go to your backend service
+  2. Click **"Disks"** tab
+  3. Click **"Link Persistent Disk"**
+  4. Configure the disk and mount path
 
-1. Go to your backend service
-2. Click **"Disks"** tab
-3. Click **"Link Persistent Disk"**
-4. Configure:
-   - **Name**: `support-tickets-db`
-   - **Mount Path**: `/opt/render/project/src/backend/SupportTicketingSystem.Api`
-   - **Size**: `1 GB` (minimum)
-5. Click **"Link Disk"**
-
-#### Update Database Path
+#### Database Path (Free Tier)
 
 Update `Program.cs` to use the persistent disk path:
 
@@ -174,8 +171,10 @@ builder.Services.AddCors(options =>
    - **Publish Directory**: `dist`
 
    **Environment Variables:**
-   - `VITE_API_URL` = `https://your-backend-service.onrender.com/api`
+   - After backend is deployed, manually add:
+     - `VITE_API_URL` = `https://your-backend-service.onrender.com/api`
      - Replace `your-backend-service` with your actual backend service name
+   - **Note**: Static sites don't support environment variables in `render.yaml`, so you'll need to add this manually in the Render dashboard after deployment.
 
 5. Click **"Create Static Site"**
 
@@ -205,13 +204,17 @@ builder.Services.AddCors(options =>
 
 ### SQLite on Render
 
-⚠️ **Limitations**:
+⚠️ **Free Tier Limitations**:
 - Render's filesystem is **ephemeral** (resets on deploy)
-- SQLite files will be lost unless using a **Persistent Disk**
-- For production, consider migrating to **PostgreSQL**
+- **Persistent Disks are NOT available on free tier**
+- SQLite database will reset on each deployment
+- For production, consider:
+  - Upgrading to a paid plan (to use persistent disks)
+  - Migrating to **PostgreSQL** (free 90-day trial, then $7/month)
 
-### Using Persistent Disk
+### Using Persistent Disk (Paid Plans Only)
 
+If you upgrade to a paid plan:
 1. Link a persistent disk to your backend service
 2. Mount it to a specific path
 3. Update database path in `Program.cs` to use the mounted path
