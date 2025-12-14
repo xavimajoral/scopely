@@ -1,13 +1,13 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import TicketDashboard from './index';
-import { mockTickets, mockTicketDetail } from '@/test/mocks/handlers';
+import { mockTickets } from '@/test/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { server } from '@/test/mocks/server';
 import { TicketStatus } from '@/types';
-import type { Ticket } from '@/types';
+import type { Ticket, CreateTicketDto } from '@/types';
 
 // Create a test wrapper with QueryClient
 const createTestWrapper = () => {
@@ -108,13 +108,13 @@ describe('TicketDashboard Integration Tests', () => {
     // Mock the POST request to return a new ticket
     server.use(
       http.post('http://localhost:5000/api/tickets', async ({ request }) => {
-        const body = await request.json();
+        const body = (await request.json()) as CreateTicketDto;
         createdTicket = {
           id: 999,
-          subject: (body as any).subject,
-          description: (body as any).description,
-          username: (body as any).username,
-          userId: (body as any).userId,
+          subject: body.subject,
+          description: body.description,
+          username: body.username,
+          userId: body.userId,
           status: TicketStatus.Open,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -148,20 +148,14 @@ describe('TicketDashboard Integration Tests', () => {
       expect(screen.getByText('Create New Ticket')).toBeInTheDocument();
     });
 
-    // Fill form - use getByLabelText which is more reliable
+    // Fill form - only subject and description (username and userId are auto-generated)
     const subjectInput = screen.getByLabelText(/subject/i);
     const descriptionInput = screen.getByLabelText(/description/i);
-    const usernameInput = screen.getByLabelText(/username/i);
-    const userIdInput = screen.getByLabelText(/user id/i);
 
     await user.clear(subjectInput);
     await user.type(subjectInput, 'New Integration Test Ticket');
     await user.clear(descriptionInput);
     await user.type(descriptionInput, 'This is a test');
-    await user.clear(usernameInput);
-    await user.type(usernameInput, 'testuser');
-    await user.clear(userIdInput);
-    await user.type(userIdInput, 'user999');
 
     // Submit - the button has form="new-ticket-form" attribute
     const submitButton = screen.getByRole('button', { name: /create ticket/i });

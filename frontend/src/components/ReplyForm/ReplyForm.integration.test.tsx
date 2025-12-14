@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ReplyForm from './index';
-import type { Ticket } from '@/types';
+import type { Ticket, CreateReplyDto } from '@/types';
 import { TicketStatus } from '@/types';
 import { http, HttpResponse } from 'msw';
 import { server } from '@/test/mocks/server';
@@ -47,15 +47,15 @@ describe('ReplyForm Integration Tests', () => {
     server.use(
       http.post('http://localhost:5000/api/tickets/1/replies', async ({ request }) => {
         replySubmitted = true;
-        const body = await request.json();
+        const body = (await request.json()) as CreateReplyDto;
         return HttpResponse.json(
           {
             id: 1,
             ticketId: 1,
-            message: (body as any).message,
-            username: (body as any).username,
-            userId: (body as any).userId,
-            isFromAgent: (body as any).isFromAgent,
+            message: body.message,
+            username: body.username,
+            userId: body.userId,
+            isFromAgent: body.isFromAgent,
             createdAt: new Date().toISOString(),
           },
           { status: 201 }

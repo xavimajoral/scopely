@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import type { Ticket, Reply } from '@/types';
+import type { Ticket, Reply, CreateTicketDto, CreateReplyDto } from '@/types';
 import { TicketStatus } from '@/types';
 
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -70,13 +70,13 @@ export const handlers = [
 
   // POST /api/tickets - Create new ticket
   http.post(`${API_BASE_URL}/tickets`, async ({ request }) => {
-    const body = await request.json();
+    const body = (await request.json()) as CreateTicketDto;
     const newTicket: Ticket = {
       id: Date.now(),
-      subject: (body as any).subject,
-      description: (body as any).description,
-      username: (body as any).username,
-      userId: (body as any).userId,
+      subject: body.subject,
+      description: body.description,
+      username: body.username,
+      userId: body.userId,
       status: TicketStatus.Open,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -99,14 +99,14 @@ export const handlers = [
   // POST /api/tickets/:id/replies - Add reply
   http.post(`${API_BASE_URL}/tickets/:id/replies`, async ({ params, request }) => {
     const { id } = params;
-    const body = await request.json();
+    const body = (await request.json()) as CreateReplyDto;
     const newReply: Reply = {
       id: Date.now(),
       ticketId: Number(id),
-      message: (body as any).message,
-      username: (body as any).username,
-      userId: (body as any).userId,
-      isFromAgent: (body as any).isFromAgent,
+      message: body.message,
+      username: body.username,
+      userId: body.userId,
+      isFromAgent: body.isFromAgent,
       createdAt: new Date().toISOString(),
     };
     return HttpResponse.json(newReply, { status: 201 });

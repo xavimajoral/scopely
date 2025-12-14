@@ -45,25 +45,23 @@ export function useResizableSidebar(
     setIsResizing(true);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isResizing) return;
-
-    const newWidth = e.clientX;
-    const maxWidth = window.innerWidth * maxWidthPercent;
-
-    if (newWidth >= minWidth && newWidth <= maxWidth) {
-      setSidebarWidth(newWidth);
-      localStorage.setItem(localStorageKey, newWidth.toString());
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsResizing(false);
-  };
-
   // Effect to handle the resizing of the sidebar
   useEffect(() => {
     if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const newWidth = e.clientX;
+      const maxWidth = window.innerWidth * maxWidthPercent;
+
+      if (newWidth >= minWidth && newWidth <= maxWidth) {
+        setSidebarWidth(newWidth);
+        localStorage.setItem(localStorageKey, newWidth.toString());
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
@@ -74,7 +72,7 @@ export function useResizableSidebar(
       document.removeEventListener('mouseup', handleMouseUp);
       document.body.classList.remove('resizingSidebar');
     };
-  }, [isResizing, handleMouseMove, handleMouseUp]);
+  }, [isResizing, minWidth, maxWidthPercent, localStorageKey]);
 
   return {
     sidebarWidth,

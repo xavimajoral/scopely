@@ -99,7 +99,7 @@ describe('ReplyForm', () => {
       json: async () => mockReply,
     });
     
-    global.fetch = mockFetch as any;
+    global.fetch = mockFetch as typeof global.fetch;
 
     render(<ReplyForm ticket={mockTicket} onTicketUpdated={onTicketUpdated} />, {
       wrapper: createWrapper(),
