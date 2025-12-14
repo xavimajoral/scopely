@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useParams, useNavigate } from 'react-router-dom';
 import { apiService } from '@/services/api.ts';
 import TicketNavigation from '@/components/TicketNavigation';
 import TicketDetail from '@/components/TicketDetail';
@@ -8,8 +9,12 @@ import styles from './TicketDashboard.module.css';
 
 function TicketDashboard() {
   const queryClient = useQueryClient();
-  const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null);
+  const { ticketId } = useParams<{ ticketId?: string }>();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Convert URL parameter to number or null
+  const selectedTicketId = ticketId ? parseInt(ticketId, 10) : null;
 
   // Query for unresolved tickets with automatic refetching every 30 seconds and on windows focus
   const {
@@ -44,8 +49,9 @@ function TicketDashboard() {
     refetchOnWindowFocus: true,
   });
 
+  // Navigate to ticket URL when ticket is selected
   const handleSelectTicket = (ticket: { id: number }) => {
-    setSelectedTicketId(ticket.id);
+    navigate(`/tickets/${ticket.id}`);
   };
 
   const handleTicketUpdated = () => {
@@ -92,7 +98,7 @@ function TicketDashboard() {
         <TicketDetail
           ticket={selectedTicket || null}
           onTicketUpdated={handleTicketUpdated}
-          onTicketResolved={() => setSelectedTicketId(null)}
+          onTicketResolved={() => navigate('/')}
         />
       </div>
       <NewTicketModal

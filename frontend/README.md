@@ -24,6 +24,7 @@ Welcome to the frontend of our Support Ticketing System! This is a cutting-edge 
 - **📏 Resizable Navigation** - Drag the navigation list's right edge to adjust width (persisted in localStorage)
 - **🔄 Backend Synchronization** - Automatic sync with backend every 30 seconds and on window focus
 - **📡 React Query** - Server state management with intelligent caching and synchronization
+- **🧭 React Router** - URL-based navigation for shareable links and browser navigation
 
 ---
 

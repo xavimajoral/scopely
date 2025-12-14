@@ -250,6 +250,7 @@ Modern React application with type safety and performance optimizations:
 - **🔄 React Compiler** - Automatic optimization and memoization
 - **📡 React Query** - Server state management with automatic caching and synchronization
 - **🎭 DiceBear Avatars** - Consistent avatar generation using [DiceBear](https://www.dicebear.com/) with seed-based deterministic generation
+- **🧭 React Router** - URL-based navigation for shareable links and browser navigation
 
 > 🔒 **Security Update**: React and React-DOM have been upgraded to version 19.2.3 to address security vulnerabilities discovered last week.
 
@@ -264,6 +265,21 @@ The application uses [DiceBear](https://www.dicebear.com/) to generate beautiful
 - ✅ **Multiple Styles** - Uses the `avataaars` style from DiceBear's collection
 
 Learn more: [DiceBear Documentation](https://www.dicebear.com/)
+
+### URL-Based Navigation with React Router
+
+The application uses **React Router** for URL-based navigation, enabling shareable links and standard browser navigation patterns.
+
+**Benefits:**
+- ✅ **Shareable links** - Direct links to specific tickets: `/tickets/123`
+- ✅ **Browser navigation** - Back/forward buttons work automatically
+- ✅ **Bookmarking** - Users can bookmark specific tickets
+- ✅ **Direct access** - Open tickets directly via URL
+- ✅ **Better UX** - Standard web navigation patterns
+
+**URL Structure:**
+- `/` - Dashboard (no ticket selected)
+- `/tickets/:ticketId` - View specific ticket (e.g., `/tickets/1`, `/tickets/2`)
 
 ---
 
