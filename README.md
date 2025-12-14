@@ -217,9 +217,6 @@ pnpm test
 
 # Run tests with UI
 pnpm test:ui
-
-# Run tests with coverage
-pnpm test:coverage
 ```
 
 #### Integration Tests
@@ -300,11 +297,11 @@ SupportTicketingSystem/
 
 ### Development Assumptions
 
-1. **🔐 Authentication** - User authentication is handled externally. Username and User ID are provided as part of ticket/reply creation.
+1. **🔐 Authentication** - User authentication is handled externally.
 
 2. **👤 Agent Identification** - Frontend hardcodes agent info (`username: "CS Agent"`, `userId: "agent001"`). In production, this would come from authentication context.
 
-3. **👥 Customer Information** - Customer username and User ID are provided when creating tickets. In production, this would come from a user management system.
+3. **👥 Customer Information** - Customer username and User ID are created automatically when creating tickets. In production, this would come from a user management system.
 
 4. **💾 Database** - SQLite is used for simplicity. Database is created automatically on first run.
 
@@ -403,23 +400,12 @@ SQLite Database
 
 ---
 
-## 🚀 Development Notes
-
-- 🔄 **Backend-Frontend Sync** - Automatic synchronization every 30 seconds and on window focus
-- 📦 API uses Entity Framework Core migrations (auto-created on first run)
-- 🌐 CORS configured for development - update for production deployment
-- 💾 SQLite database file is included in `.gitignore` by default
-- ⚡ React Compiler enabled for automatic optimization
-- 🔒 React 19.2.3 - Upgraded to address security vulnerabilities (January 2025)
-
----
-
 ## 🔮 Future Enhancements
 
 Potential improvements for production:
 
 - 🔐 User authentication and authorization
-- 📡 Real-time updates using SignalR
+- 📡 Real-time updates
 - 📧 Email notifications
 - 👥 Ticket assignment to specific agents
 - ⚡ Priority levels and categories
@@ -427,7 +413,6 @@ Potential improvements for production:
 - 📎 File attachments
 - 📊 Ticket history and audit logs
 - 📈 Reporting and analytics
-- 🏢 Multi-tenant support
 
 ---
 
@@ -435,7 +420,6 @@ Potential improvements for production:
 
 - [Frontend README](./frontend/README.md) - Detailed frontend documentation
 - [React Query Guide](./frontend/REACT_QUERY.md) - Complete guide to state management with React Query
-- [Deployment Guide](./DEPLOYMENT.md) - Complete guide for deploying and sharing the application
 - [Backend API Documentation](http://localhost:5000/swagger) - Available when backend is running
 
 ---

@@ -83,6 +83,71 @@ frontend/
 
 ---
 
+## 🎣 Custom Hooks
+
+### `useResizableSidebar` Hook
+
+The **`useResizableSidebar`** hook provides a reusable solution for creating resizable sidebars with localStorage persistence. This hook is used in the `TicketNavigation` component to allow users to drag and resize the navigation list.
+
+#### Features
+
+- ✅ **Drag-to-resize** - Users can drag the sidebar edge to adjust width
+- ✅ **localStorage persistence** - Sidebar width is saved and restored on page reload
+- ✅ **Configurable constraints** - Set minimum width and maximum width percentage
+- ✅ **Smooth UX** - Adds CSS classes for cursor and user-select during resize
+- ✅ **Type-safe** - Fully typed with TypeScript
+
+#### Usage
+
+```typescript
+import { useResizableSidebar } from '@/hooks/useResizableSidebar';
+
+function MyComponent() {
+  const { sidebarWidth, sidebarRef, handleMouseDown } = useResizableSidebar({
+    localStorageKey: 'mySidebarWidth',  // Optional: custom storage key
+    defaultWidth: 400,                   // Optional: default width in pixels
+    minWidth: 300,                       // Optional: minimum width
+    maxWidthPercent: 0.6,                // Optional: max width as % of viewport
+  });
+
+  return (
+    <div ref={sidebarRef} style={{ width: sidebarWidth }}>
+      {/* Sidebar content */}
+      <div onMouseDown={handleMouseDown} className="resize-handle">
+        {/* Resize handle */}
+      </div>
+    </div>
+  );
+}
+```
+
+#### API
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `sidebarWidth` | `number` | Current width of the sidebar in pixels |
+| `isResizing` | `boolean` | Whether the sidebar is currently being resized |
+| `sidebarRef` | `RefObject<HTMLDivElement>` | Ref to attach to the sidebar container |
+| `handleMouseDown` | `(e: React.MouseEvent) => void` | Handler to attach to the resize handle |
+
+#### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `localStorageKey` | `string` | `'ticketListWidth'` | Key for localStorage persistence |
+| `defaultWidth` | `number` | `400` | Default width in pixels |
+| `minWidth` | `number` | `300` | Minimum allowed width in pixels |
+| `maxWidthPercent` | `number` | `0.6` | Maximum width as percentage of viewport (0.0-1.0) |
+
+#### Implementation Details
+
+- The hook automatically adds a `resizingSidebar` class to `document.body` during resize for global cursor styling
+- Width constraints are enforced during drag operations
+- localStorage is updated in real-time as the user drags
+- The hook cleans up event listeners and CSS classes on unmount
+
+---
+
 ## 🔧 Development Tools
 
 ### Code Quality
@@ -149,13 +214,6 @@ components/
   │   └── TicketList.test.tsx  # Test file
 ```
 
-#### Unit Test Setup
-
-- Test environment: `jsdom` (browser-like environment)
-- Setup file: `src/test/setup.ts`
-- CSS Modules are supported in tests
-- Path aliases (`@/`) work in tests
-
 ### Integration Testing
 
 Integration tests verify that components work together with their dependencies (API calls, React Query, etc.) using **MSW (Mock Service Worker)** to mock HTTP requests.
@@ -170,58 +228,6 @@ pnpm test
 
 # Run only integration tests
 pnpm test:integration
-```
-```
-
-#### Writing Integration Tests
-
-Integration tests are located next to components with the `.integration.test.tsx` extension:
-
-```
-components/
-  ├── TicketDashboard/
-  │   ├── index.tsx
-  │   └── TicketDashboard.integration.test.tsx  # Integration test
-```
-
-#### Integration Test Features
-
-- **MSW (Mock Service Worker)** - Intercepts and mocks API requests
-- **React Query Integration** - Tests components with real QueryClient
-- **User Interactions** - Tests complete user flows (create, update, delete)
-- **Error Handling** - Tests error states and error recovery
-- **API Mocking** - Mock handlers in `src/test/mocks/handlers.ts`
-
-#### Example Integration Test
-
-```typescript
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { server } from '@/test/mocks/server';
-import { http, HttpResponse } from 'msw';
-import TicketDashboard from './index';
-
-it('should create a new ticket', async () => {
-  const user = userEvent.setup();
-  
-  // Override mock for this test
-  server.use(
-    http.post('/api/tickets', async ({ request }) => {
-      const body = await request.json();
-      return HttpResponse.json({ id: 1, ...body }, { status: 201 });
-    })
-  );
-
-  render(<TicketDashboard />, { wrapper: createTestWrapper() });
-  
-  await user.click(screen.getByRole('button', { name: /new ticket/i }));
-  await user.type(screen.getByLabelText(/subject/i), 'Test Ticket');
-  await user.click(screen.getByRole('button', { name: /create ticket/i }));
-  
-  await waitFor(() => {
-    expect(screen.getByText('Test Ticket')).toBeInTheDocument();
-  });
-});
 ```
 
 ### End-to-End Testing (Playwright)
@@ -272,23 +278,6 @@ e2e/
    ```bash
    pnpm exec playwright install
    ```
-
-#### Writing E2E Tests
-
-Example E2E test:
-
-```typescript
-import { test, expect } from '@playwright/test';
-
-test('should create a new ticket', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: /new ticket/i }).click();
-  await page.getByLabel(/subject/i).fill('Test Ticket');
-  await page.getByRole('button', { name: /create ticket/i }).click();
-  await expect(page.getByText('Test Ticket')).toBeVisible();
-});
-```
-
 ---
 
 ## 🌐 Browser Support
