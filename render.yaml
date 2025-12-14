@@ -2,13 +2,16 @@ services:
   # Backend API Service
   - type: web
     name: support-ticketing-backend
+    runtime: docker
     region: oregon
     plan: free
-    buildCommand: cd backend && dotnet restore && dotnet publish -c Release -o ./publish
-    startCommand: cd backend/publish && dotnet SupportTicketingSystem.Api.dll
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
+      - key: PORT
+        value: 10000
 
   # Frontend Static Site
   - type: web
