@@ -15,100 +15,7 @@ A comprehensive ticketing system built with cutting-edge technologies, designed 
 
 ---
 
-## ✨ Key Features
-
-- **🎫 Ticket Management** - Create, view, and manage support tickets effortlessly
-- **💬 Conversation Threads** - Chronological reply threads for each ticket
-- **🔄 Smart Status Management** - Automatic status transitions based on agent interactions
-  - Tickets start as **"Open"**
-  - Automatically change to **"In Resolution"** when an agent replies
-  - Can be manually marked as **"Resolved"**
-- **⚡ Real-time Updates** - Automatic synchronization between backend and frontend every 30 seconds and on window focus
-- **🏗️ Clean Architecture** - Separation of concerns with Repository and Service layers
-- **🎨 Modern UI** - Beautiful, responsive interface built with React and CSS Modules
-- **📏 Resizable Navigation** - Drag the navigation list's right edge to adjust width (persisted in localStorage)
-
----
-
-## 🏗️ Architecture
-
-### Backend Stack (.NET 8)
-
-Built with **Clean Architecture** principles and modern .NET features:
-
-- **📦 Domain Layer** - Core business entities (Ticket, Reply, TicketStatus) with no external dependencies
-- **💾 Data Layer** - Entity Framework Core with SQLite, Repository pattern for data access abstraction
-- **⚙️ Services Layer** - Business logic, status transitions, and domain orchestration
-- **🌐 API Layer** - RESTful API controllers with DTOs for request/response handling
-
-**Key Patterns:**
-- Repository Pattern for data access abstraction
-- Service Layer for business logic encapsulation
-- Dependency Injection for loose coupling
-- DTO Pattern for API contracts
-
-### Frontend Stack (React + TypeScript)
-
-Modern React application with type safety and performance optimizations:
-
-- **⚛️ React 19.2.3** - Latest React with cutting-edge features and security patches
-- **📘 TypeScript** - Full type safety throughout
-- **⚡ Vite 7** - Lightning-fast build tool and dev server
-- **🎨 CSS Modules** - Scoped styling for maintainable components
-- **🔄 React Compiler** - Automatic optimization and memoization
-- **📡 React Query** - Server state management with automatic caching and synchronization
-- **🎭 DiceBear Avatars** - Consistent avatar generation using [DiceBear](https://www.dicebear.com/) with seed-based deterministic generation
-
-> 🔒 **Security Update**: React and React-DOM have been upgraded to version 19.2.3 to address security vulnerabilities discovered last week.
-
-### Avatar Generation with DiceBear
-
-The application uses [DiceBear](https://www.dicebear.com/) to generate beautiful, consistent avatars for users. DiceBear provides **30+ avatar styles** and is fully customizable.
-
-**Key Features:**
-- ✅ **Deterministic Generation** - Each user/ticket gets a consistent avatar using a seed value
-- ✅ **No External API Calls** - Avatars are generated client-side using the `@dicebear/core` library
-- ✅ **Consistent Appearance** - Same seed always produces the same avatar
-- ✅ **Multiple Styles** - Uses the `avataaars` style from DiceBear's collection
-
-**How it works:**
-- Each ticket uses its `id` as the seed: `seed={ticket.id.toString()}`
-- The same ticket ID will always generate the same avatar
-- Avatars are generated as SVG data URIs, ensuring fast rendering and no external dependencies
-- The `DicebearAvatar` component encapsulates the generation logic for reusability
-
-**Example Usage:**
-```typescript
-// Generate avatar for a ticket
-<DicebearAvatar seed={ticket.id.toString()} size={48} />
-
-// Generate avatar for a user
-<DicebearAvatar seed={userId} size={64} alt="User Avatar" />
-```
-
-Learn more: [DiceBear Documentation](https://www.dicebear.com/)
-
-### State Management
-
-The frontend uses **@tanstack/react-query** for server state management instead of manual `useState` and `useEffect`. This provides:
-
-- ✅ **Automatic caching** - Data is cached and shared across components
-- ✅ **Background synchronization** - Auto-refetch every 30 seconds and on window focus
-- ✅ **Smart cache invalidation** - Automatic updates after mutations (create, update, delete)
-- ✅ **Built-in loading/error states** - No manual state management needed
-
-**How it works:**
-- `useQuery` - Fetches and caches data (tickets list, ticket details)
-- `useMutation` - Handles data modifications (create ticket, add reply, resolve ticket)
-- Cache invalidation - Automatically refetches related data after mutations
-
-📖 **For detailed explanation, see [React Query Guide](./frontend/REACT_QUERY.md)**
-
-📖 **For detailed frontend documentation, see [Frontend README](./frontend/README.md)**
-
----
-
-## 🚀 Getting Started
+## 🚀 Setup Instructions
 
 ### 📥 Download the Repository
 
@@ -127,12 +34,12 @@ Or download the repository as a ZIP file from GitHub and extract it.
 Before you begin, ensure you have the following installed:
 
 - **.NET 8 SDK** - [Download here](https://dotnet.microsoft.com/download/dotnet/8.0)
-  - Verify installation: `dotnet --version` (should show 8.x.x)
+    - Verify installation: `dotnet --version` (should show 8.x.x)
 - **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
-  - Verify installation: `node --version` (should show v18.x.x or higher)
+    - Verify installation: `node --version` (should show v18.x.x or higher)
 - **pnpm** - [Install pnpm](https://pnpm.io/installation)
-  - Install via npm: `npm install -g pnpm`
-  - Verify installation: `pnpm --version`
+    - Install via npm: `npm install -g pnpm`
+    - Verify installation: `pnpm --version`
 - **SQLite** - Included with .NET (no separate installation needed)
 
 ### 🎯 Installation Steps
@@ -213,6 +120,22 @@ The SQLite database is **automatically created** on first run. The database file
 3. **Open Browser**: Navigate to `http://localhost:5173`
 
 ---
+## ⚙️ Configuration & Assumptions
+
+### Development Assumptions
+
+1. **🔐 Authentication** - User authentication is handled externally.
+
+2. **👤 Agent Identification** - Frontend hardcodes agent info (`username: "CS Agent"`, `userId: "agent001"`). In production, this would come from authentication context.
+
+3. **👥 Customer Information** - Customer username and User ID are created automatically when creating tickets. In production, this would come from a user management system.
+
+4. **💾 Database** - SQLite is used for simplicity. Database is created automatically on first run.
+
+5. **🌐 CORS** - Backend configured to allow requests from common frontend dev ports (3000, 5173, 4200). Adjust CORS settings in `Program.cs` for production.
+
+---
+
 
 ## 🧪 Testing
 
@@ -284,6 +207,66 @@ pnpm test:e2e:headed
 
 ---
 
+## ✨ Key Features
+
+- **🎫 Ticket Management** - Create, view, and manage support tickets effortlessly
+- **💬 Conversation Threads** - Chronological reply threads for each ticket
+- **🔄 Smart Status Management** - Automatic status transitions based on agent interactions
+  - Tickets start as **"Open"**
+  - Automatically change to **"In Resolution"** when an agent replies
+  - Can be manually marked as **"Resolved"**
+- **⚡ Real-time Updates** - Automatic synchronization between backend and frontend every 30 seconds and on window focus
+- **🏗️ Clean Architecture** - Separation of concerns with Repository and Service layers
+- **🎨 Modern UI** - Beautiful, responsive interface built with React and CSS Modules
+- **📏 Resizable Navigation** - Drag the navigation list's right edge to adjust width (persisted in localStorage)
+
+---
+
+## 🏗️ Architecture
+
+### Backend Stack (.NET 8)
+
+Built with **Clean Architecture** principles and modern .NET features:
+
+- **📦 Domain Layer** - Core business entities (Ticket, Reply, TicketStatus) with no external dependencies
+- **💾 Data Layer** - Entity Framework Core with SQLite, Repository pattern for data access abstraction
+- **⚙️ Services Layer** - Business logic, status transitions, and domain orchestration
+- **🌐 API Layer** - RESTful API controllers with DTOs for request/response handling
+
+**Key Patterns:**
+- Repository Pattern for data access abstraction
+- Service Layer for business logic encapsulation
+- Dependency Injection for loose coupling
+- DTO Pattern for API contracts
+
+### Frontend Stack (React + TypeScript)
+
+Modern React application with type safety and performance optimizations:
+
+- **⚛️ React 19.2.3** - Latest React with cutting-edge features and security patches
+- **📘 TypeScript** - Full type safety throughout
+- **⚡ Vite 7** - Lightning-fast build tool and dev server
+- **🎨 CSS Modules** - Scoped styling for maintainable components
+- **🔄 React Compiler** - Automatic optimization and memoization
+- **📡 React Query** - Server state management with automatic caching and synchronization
+- **🎭 DiceBear Avatars** - Consistent avatar generation using [DiceBear](https://www.dicebear.com/) with seed-based deterministic generation
+
+> 🔒 **Security Update**: React and React-DOM have been upgraded to version 19.2.3 to address security vulnerabilities discovered last week.
+
+### Avatar Generation with DiceBear
+
+The application uses [DiceBear](https://www.dicebear.com/) to generate beautiful, consistent avatars for users. DiceBear provides **30+ avatar styles** and is fully customizable.
+
+**Key Features:**
+- ✅ **Deterministic Generation** - Each user/ticket gets a consistent avatar using a seed value
+- ✅ **No External API Calls** - Avatars are generated client-side using the `@dicebear/core` library
+- ✅ **Consistent Appearance** - Same seed always produces the same avatar
+- ✅ **Multiple Styles** - Uses the `avataaars` style from DiceBear's collection
+
+Learn more: [DiceBear Documentation](https://www.dicebear.com/)
+
+---
+
 ## 📡 API Endpoints
 
 ### Tickets
@@ -322,22 +305,6 @@ SupportTicketingSystem/
 │   └── package.json
 └── README.md
 ```
-
-## ⚙️ Configuration & Assumptions
-
-### Development Assumptions
-
-1. **🔐 Authentication** - User authentication is handled externally.
-
-2. **👤 Agent Identification** - Frontend hardcodes agent info (`username: "CS Agent"`, `userId: "agent001"`). In production, this would come from authentication context.
-
-3. **👥 Customer Information** - Customer username and User ID are created automatically when creating tickets. In production, this would come from a user management system.
-
-4. **💾 Database** - SQLite is used for simplicity. Database is created automatically on first run.
-
-5. **🌐 CORS** - Backend configured to allow requests from common frontend dev ports (3000, 5173, 4200). Adjust CORS settings in `Program.cs` for production.
-
----
 
 ## 🏛️ Architecture & Design Patterns
 
@@ -402,20 +369,6 @@ The backend follows **Clean Architecture** principles with clear separation of c
 - ✅ **Interface Segregation** - Focused, cohesive interfaces
 - ✅ **Open/Closed Principle** - Open for extension, closed for modification
 
-### Example Flow
-
-```
-HTTP Request
-    ↓
-TicketsController (API Layer)
-    ↓ uses ITicketService
-TicketService (Business Logic)
-    ↓ uses ITicketRepository
-TicketRepository (Data Access)
-    ↓ uses ApplicationDbContext
-SQLite Database
-```
-
 ---
 
 ## 🎨 Code Quality
@@ -450,8 +403,7 @@ Potential improvements for production:
 
 - [Frontend README](./frontend/README.md) - Detailed frontend documentation
 - [React Query Guide](./frontend/REACT_QUERY.md) - Complete guide to state management with React Query
-- [Backend API Documentation](http://localhost:5000/swagger) - Available when backend is running
-- [Azure Deployment Guide](./AZURE_SETUP.md) - Complete guide for deploying to Azure
+- [Swagger: API Documentation](http://localhost:5000/swagger) - Available when backend is running
 
 ---
 
