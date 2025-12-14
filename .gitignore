@@ -34,9 +34,6 @@ frontend/.env.production.local
 *.swo
 *~
 
-# Dev Containers (keep .devcontainer, ignore .devcontainer.json if needed)
-# .devcontainer/ is intentionally NOT ignored - it should be committed
-
 # OS
 .DS_Store
 Thumbs.db

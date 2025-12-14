@@ -11,6 +11,8 @@ A comprehensive ticketing system built with cutting-edge technologies, designed 
 - **Frontend**: React 19.2.3, TypeScript, Vite 7, React Query
 - **Testing**: xUnit (backend), Vitest + Playwright (frontend)
 
+![Ticket Management System](./docs/images/TicketManagement.png)
+
 ---
 
 ## ✨ Key Features
@@ -55,8 +57,36 @@ Modern React application with type safety and performance optimizations:
 - **🎨 CSS Modules** - Scoped styling for maintainable components
 - **🔄 React Compiler** - Automatic optimization and memoization
 - **📡 React Query** - Server state management with automatic caching and synchronization
+- **🎭 DiceBear Avatars** - Consistent avatar generation using [DiceBear](https://www.dicebear.com/) with seed-based deterministic generation
 
 > 🔒 **Security Update**: React and React-DOM have been upgraded to version 19.2.3 to address security vulnerabilities discovered last week.
+
+### Avatar Generation with DiceBear
+
+The application uses [DiceBear](https://www.dicebear.com/) to generate beautiful, consistent avatars for users. DiceBear provides **30+ avatar styles** and is fully customizable.
+
+**Key Features:**
+- ✅ **Deterministic Generation** - Each user/ticket gets a consistent avatar using a seed value
+- ✅ **No External API Calls** - Avatars are generated client-side using the `@dicebear/core` library
+- ✅ **Consistent Appearance** - Same seed always produces the same avatar
+- ✅ **Multiple Styles** - Uses the `avataaars` style from DiceBear's collection
+
+**How it works:**
+- Each ticket uses its `id` as the seed: `seed={ticket.id.toString()}`
+- The same ticket ID will always generate the same avatar
+- Avatars are generated as SVG data URIs, ensuring fast rendering and no external dependencies
+- The `DicebearAvatar` component encapsulates the generation logic for reusability
+
+**Example Usage:**
+```typescript
+// Generate avatar for a ticket
+<DicebearAvatar seed={ticket.id.toString()} size={48} />
+
+// Generate avatar for a user
+<DicebearAvatar seed={userId} size={64} alt="User Avatar" />
+```
+
+Learn more: [DiceBear Documentation](https://www.dicebear.com/)
 
 ### State Management
 
@@ -421,6 +451,7 @@ Potential improvements for production:
 - [Frontend README](./frontend/README.md) - Detailed frontend documentation
 - [React Query Guide](./frontend/REACT_QUERY.md) - Complete guide to state management with React Query
 - [Backend API Documentation](http://localhost:5000/swagger) - Available when backend is running
+- [Azure Deployment Guide](./AZURE_SETUP.md) - Complete guide for deploying to Azure
 
 ---
 
