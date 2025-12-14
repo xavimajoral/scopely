@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import type { UserConfig } from 'vitest/config'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -30,4 +31,4 @@ export default defineConfig({
       '**/e2e/**', // Exclude Playwright E2E tests
     ],
   },
-})
+} satisfies UserConfig)
