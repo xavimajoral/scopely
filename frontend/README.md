@@ -23,6 +23,7 @@ Welcome to the frontend of our Support Ticketing System! This is a cutting-edge 
 - **🎯 Path Aliases** - Clean imports with `@/` prefix
 - **📏 Resizable Navigation** - Drag the navigation list's right edge to adjust width (persisted in localStorage)
 - **🔄 Backend Synchronization** - Automatic sync with backend every 30 seconds and on window focus
+- **📡 React Query** - Server state management with intelligent caching and synchronization
 
 ---
 
@@ -290,6 +291,38 @@ test('should create a new ticket', async ({ page }) => {
 
 ---
 
+## 🌐 Browser Support
+
+This project uses **Browserslist** to define browser compatibility targets. The configuration ensures consistent browser support across all build tools.
+
+### Current Browser Targets
+
+The project supports:
+- ✅ **Modern browsers** (Chrome, Firefox, Safari, Edge)
+- ✅ **Last 2 versions** of major browsers
+- ✅ **Browsers with >0.2% usage** globally
+- ✅ **Firefox ESR** (Extended Support Release)
+- ❌ **IE 11** and dead browsers are excluded
+
+## 📡 State Management with React Query
+
+This project uses **@tanstack/react-query** for server state management. React Query provides automatic caching, background refetching, and smart cache invalidation, eliminating the need for manual state management.
+
+**Key Benefits:**
+- ✅ **Automatic caching** - Data cached and shared across components
+- ✅ **Background synchronization** - Auto-refetch every 30 seconds and on window focus
+- ✅ **Smart cache updates** - Automatic invalidation after mutations
+- ✅ **Built-in loading/error states** - No manual state management needed
+
+**How it works:**
+- **`useQuery`** - Fetches and caches data (e.g., tickets list, ticket details)
+- **`useMutation`** - Handles data modifications (create, update, delete)
+- **Cache invalidation** - Automatically refetches data after mutations
+
+📖 **For detailed explanation, see [React Query Guide](./REACT_QUERY.md)**
+
+---
+
 ## 🎯 Best Practices
 
 - **Use CSS Modules** for component styling
@@ -298,3 +331,5 @@ test('should create a new ticket', async ({ page }) => {
 - **Follow component structure** - keep components focused and reusable
 - **Use path aliases** - import with `@/` prefix
 - **Write tests** - Test components and user interactions
+- **Browser compatibility** - Browserslist ensures consistent browser support across tools
+- **React Query for server state** - Use `useQuery` for fetching, `useMutation` for updates

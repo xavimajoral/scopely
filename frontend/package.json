@@ -53,5 +53,13 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
     "vitest": "^2.1.8"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not dead",
+    "> 0.2%",
+    "last 2 versions",
+    "Firefox ESR"
+  ]
 }

@@ -40,11 +40,9 @@ test.describe('Ticket Creation', () => {
     await page.waitForTimeout(500);
     await expect(page.getByText('Create New Ticket')).toBeVisible();
 
-    // Fill form
+    // Fill form (only subject and description - username and userId are auto-generated)
     await page.locator('input[name="subject"]').fill('E2E Test Ticket');
     await page.locator('textarea[name="description"]').fill('Test description');
-    await page.locator('input[name="username"]').fill('testuser');
-    await page.locator('input[name="userId"]').fill('user123');
 
     // Submit
     const submitButton = page.getByRole('button', { name: /^create ticket$/i });

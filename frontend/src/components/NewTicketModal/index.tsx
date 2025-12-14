@@ -13,11 +13,9 @@ interface NewTicketModalProps {
 
 const NewTicketModal: React.FC<NewTicketModalProps> = ({ isOpen, onClose, onTicketCreated }) => {
   const queryClient = useQueryClient();
-  const [formData, setFormData] = useState<CreateTicketDto>({
+  const [formData, setFormData] = useState({
     subject: '',
     description: '',
-    username: '',
-    userId: '',
   });
 
   // Mutation for creating a new ticket
@@ -31,8 +29,6 @@ const NewTicketModal: React.FC<NewTicketModalProps> = ({ isOpen, onClose, onTick
       setFormData({
         subject: '',
         description: '',
-        username: '',
-        userId: '',
       });
       onTicketCreated();
       onClose();
@@ -49,11 +45,17 @@ const NewTicketModal: React.FC<NewTicketModalProps> = ({ isOpen, onClose, onTick
       return;
     }
 
-    if (!formData.username.trim() || !formData.userId.trim()) {
-      return;
-    }
+    // Auto-generate username and userId (different formats)
+    const timestamp = String(Date.now() % 10000).padStart(4, '0'); // 4-digit timestamp
+    const randomId = Math.random().toString(36).substring(2, 9); // Random alphanumeric string
+    const ticketDto: CreateTicketDto = {
+      subject: formData.subject.trim(),
+      description: formData.description.trim(),
+      username: `Customer ${timestamp}`,
+      userId: `usr-${randomId}`,
+    };
 
-    createTicketMutation.mutate(formData);
+    createTicketMutation.mutate(ticketDto);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -111,45 +113,11 @@ const NewTicketModal: React.FC<NewTicketModalProps> = ({ isOpen, onClose, onTick
     </div>
   );
 
-  const username = (
-    <div className={styles.formGroup}>
-      <label htmlFor="username">Username *</label>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        value={formData.username}
-        onChange={handleChange}
-        required
-        maxLength={100}
-      />
-    </div>
-  );
-
-  const userId = (
-    <div className={styles.formGroup}>
-      <label htmlFor="userId">User ID *</label>
-      <input
-        type="text"
-        id="userId"
-        name="userId"
-        value={formData.userId}
-        onChange={handleChange}
-        required
-        maxLength={50}
-      />
-    </div>
-  );
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Create New Ticket" footer={footer}>
       <form id="new-ticket-form" onSubmit={handleSubmit}>
         {subject}
         {description}
-        <div className={styles.formRow}>
-          {username}
-          {userId}
-        </div>
         {createTicketMutation.isError && (
           <div className={styles.errorMessage}>Failed to create ticket. Please try again.</div>
         )}
