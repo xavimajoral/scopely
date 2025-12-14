@@ -60,16 +60,6 @@ const ReplyForm: React.FC<ReplyFormProps> = ({ ticket, onTicketUpdated }) => {
 
   const replyFormFooter = (
     <div className={styles.replyFormFooter}>
-      <div className={styles.replyAuthorInfo}>
-        <span>CS Agent</span>
-        <div className={styles.avatar}>
-          <img
-            width={40}
-            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Luis"
-            alt="avatar"
-          />
-        </div>
-      </div>
       <button
         type="submit"
         className={styles.sendButton}
@@ -77,6 +67,12 @@ const ReplyForm: React.FC<ReplyFormProps> = ({ ticket, onTicketUpdated }) => {
       >
         {addAgentReplyMutation.isPending ? 'Sending...' : 'Send'}
       </button>
+      <div className={styles.replyAuthorInfo}>
+        <span>CS Agent</span>
+        <div className={styles.avatar}>
+          <img width={40} src="https://api.dicebear.com/9.x/avataaars/svg?seed=Luis" alt="avatar" />
+        </div>
+      </div>
     </div>
   );
 
