@@ -62,5 +62,10 @@
     "> 0.2%",
     "last 2 versions",
     "Firefox ESR"
-  ]
+  ],
+  "pnpm": {
+    "overrides": {
+      "vite": "^7.2.4"
+    }
+  }
 }
