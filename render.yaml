@@ -4,7 +4,6 @@ services:
     name: support-ticketing-backend
     runtime: docker
     region: oregon
-    plan: free
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     envVars:
