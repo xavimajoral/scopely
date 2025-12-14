@@ -1,4 +1,4 @@
-# 🎫 Customer Support Ticketing System
+# Customer Support Ticketing System
 
 > **A modern full-stack application for managing customer support tickets with real-time updates and seamless agent workflows**
 
@@ -212,7 +212,7 @@ Run unit tests using Vitest:
 ```bash
 cd frontend
 
-# Run tests once
+# Run tests (unit + integration) once
 pnpm test
 
 # Run tests with UI
