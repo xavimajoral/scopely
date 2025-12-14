@@ -2,7 +2,14 @@
 
 > **A modern full-stack application for managing customer support tickets with real-time updates and seamless agent workflows**
 
+## 📋 Project Overview
+
 A comprehensive ticketing system built with cutting-edge technologies, designed to streamline customer support operations. Support agents can efficiently view, respond to, and manage customer inquiries with an intuitive interface and automatic status management.
+
+**Technology Stack:**
+- **Backend**: .NET 8 with Clean Architecture, Entity Framework Core, SQLite
+- **Frontend**: React 19.2.3, TypeScript, Vite 7, React Query
+- **Testing**: xUnit (backend), Vitest + Playwright (frontend)
 
 ---
 
@@ -25,12 +32,18 @@ A comprehensive ticketing system built with cutting-edge technologies, designed 
 
 ### Backend Stack (.NET 8)
 
-Built with clean architecture principles and modern .NET features:
+Built with **Clean Architecture** principles and modern .NET features:
 
-- **📦 Domain Layer** - Core business entities (Ticket, Reply, TicketStatus)
-- **💾 Data Layer** - Entity Framework Core with SQLite, Repository pattern
-- **⚙️ Services Layer** - Business logic and ticket management
-- **🌐 API Layer** - RESTful API controllers with DTOs
+- **📦 Domain Layer** - Core business entities (Ticket, Reply, TicketStatus) with no external dependencies
+- **💾 Data Layer** - Entity Framework Core with SQLite, Repository pattern for data access abstraction
+- **⚙️ Services Layer** - Business logic, status transitions, and domain orchestration
+- **🌐 API Layer** - RESTful API controllers with DTOs for request/response handling
+
+**Key Patterns:**
+- Repository Pattern for data access abstraction
+- Service Layer for business logic encapsulation
+- Dependency Injection for loose coupling
+- DTO Pattern for API contracts
 
 ### Frontend Stack (React + TypeScript)
 
@@ -41,58 +54,102 @@ Modern React application with type safety and performance optimizations:
 - **⚡ Vite 7** - Lightning-fast build tool and dev server
 - **🎨 CSS Modules** - Scoped styling for maintainable components
 - **🔄 React Compiler** - Automatic optimization and memoization
-- **📡 React Query** - Efficient data fetching and caching
+- **📡 React Query** - Server state management with automatic caching and synchronization
 
 > 🔒 **Security Update**: React and React-DOM have been upgraded to version 19.2.3 to address security vulnerabilities discovered last week.
+
+### State Management
+
+The frontend uses **@tanstack/react-query** for server state management instead of manual `useState` and `useEffect`. This provides:
+
+- ✅ **Automatic caching** - Data is cached and shared across components
+- ✅ **Background synchronization** - Auto-refetch every 30 seconds and on window focus
+- ✅ **Smart cache invalidation** - Automatic updates after mutations (create, update, delete)
+- ✅ **Built-in loading/error states** - No manual state management needed
+
+**How it works:**
+- `useQuery` - Fetches and caches data (tickets list, ticket details)
+- `useMutation` - Handles data modifications (create ticket, add reply, resolve ticket)
+- Cache invalidation - Automatically refetches related data after mutations
+
+📖 **For detailed explanation, see [React Query Guide](./frontend/REACT_QUERY.md)**
 
 📖 **For detailed frontend documentation, see [Frontend README](./frontend/README.md)**
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-### Prerequisites
+### 📥 Download the Repository
+
+Clone the repository using Git:
+
+```bash
+# Clone the repository
+git clone https://github.com/xavimajoral/scopely.git
+cd scopely
+```
+
+Or download the repository as a ZIP file from GitHub and extract it.
+
+### 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
 
 - **.NET 8 SDK** - [Download here](https://dotnet.microsoft.com/download/dotnet/8.0)
+  - Verify installation: `dotnet --version` (should show 8.x.x)
 - **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
+  - Verify installation: `node --version` (should show v18.x.x or higher)
 - **pnpm** - [Install pnpm](https://pnpm.io/installation)
+  - Install via npm: `npm install -g pnpm`
+  - Verify installation: `pnpm --version`
 - **SQLite** - Included with .NET (no separate installation needed)
 
-### 🎯 Getting Started
+### 🎯 Installation Steps
 
-#### 1️⃣ Backend Setup
+#### 1️⃣ Backend Installation
 
 ```bash
 # Navigate to backend directory
 cd backend
 
-# Restore NuGet packages
+# Restore NuGet packages (downloads all dependencies)
 dotnet restore
 
-# Build the solution
+# Build the solution (compiles all projects)
 dotnet build
 
-# Run the API
+# The database will be automatically created on first run
+# Navigate to the API project and run it
 cd SupportTicketingSystem.Api
 dotnet run
 ```
+
+**What happens:**
+- `dotnet restore` - Downloads all NuGet packages (dependencies)
+- `dotnet build` - Compiles the solution and all projects
+- `dotnet run` - Starts the API server and creates the SQLite database automatically
 
 **Backend will be available at:**
 - 🌐 API: `http://localhost:5000`
 - 📚 Swagger UI: `http://localhost:5000/swagger`
 
-#### 2️⃣ Frontend Setup
+#### 2️⃣ Frontend Installation
 
 ```bash
 # Navigate to frontend directory
 cd frontend
 
-# Install dependencies
+# Install dependencies (downloads all npm packages)
 pnpm install
 
-# Start development server
+# Start the development server
 pnpm dev
 ```
+
+**What happens:**
+- `pnpm install` - Downloads all npm packages listed in `package.json`
+- `pnpm dev` - Starts the Vite development server with hot module replacement
 
 **Frontend will be available at:** `http://localhost:5173`
 
@@ -100,7 +157,14 @@ pnpm dev
 
 The SQLite database is **automatically created** on first run. The database file (`support_tickets.db`) will be created in the `SupportTicketingSystem.Api` directory.
 
-> 💡 **Tip:** To reset the database, simply delete the `support_tickets.db` file and restart the API.
+**SQLite Setup Notes:**
+- ✅ **No manual setup required** - Database is created automatically when the API starts
+- 📁 **Location**: `backend/SupportTicketingSystem.Api/support_tickets.db`
+- 🔄 **Migrations**: Entity Framework Core automatically applies migrations on first run
+- 🗑️ **Reset Database**: Delete the `support_tickets.db` file and restart the API to recreate it
+- 📦 **No separate installation needed** - SQLite is included with .NET
+
+> 💡 **Tip:** To reset the database, simply delete the `support_tickets.db` file and restart the API. The database will be recreated with a fresh schema.
 
 ---
 
@@ -127,6 +191,7 @@ The SQLite database is **automatically created** on first run. The database file
 Run all unit tests from the `backend` directory:
 
 ```bash
+cd backend
 dotnet test
 ```
 
@@ -135,6 +200,60 @@ dotnet test
 - ✅ Status updates
 - ✅ Reply handling
 - ✅ Status transition rules
+
+### Frontend Tests
+
+The frontend includes three types of tests: **Unit Tests**, **Integration Tests**, and **End-to-End (E2E) Tests**.
+
+#### Unit Tests
+
+Run unit tests using Vitest:
+
+```bash
+cd frontend
+
+# Run tests once
+pnpm test
+
+# Run tests with UI
+pnpm test:ui
+
+# Run tests with coverage
+pnpm test:coverage
+```
+
+#### Integration Tests
+
+Integration tests use MSW (Mock Service Worker) to mock API calls:
+
+```bash
+cd frontend
+
+# Run only integration tests
+pnpm test:integration
+
+# Or run all tests (includes integration tests)
+pnpm test
+```
+
+#### End-to-End Tests
+
+E2E tests use Playwright to test the full application:
+
+```bash
+cd frontend
+
+# Run E2E tests (requires backend to be running)
+pnpm test:e2e
+
+# Run E2E tests with UI
+pnpm test:e2e:ui
+
+# Run E2E tests in headed mode (see browser)
+pnpm test:e2e:headed
+```
+
+**Note:** E2E tests automatically start the frontend dev server, but the backend must be running on `http://localhost:5000`.
 
 ---
 
@@ -177,35 +296,6 @@ SupportTicketingSystem/
 └── README.md
 ```
 
----
-
-## 🎯 Status Transitions
-
-The system follows these status transition rules:
-
-```
-┌─────────┐
-│  Open   │ ──────────────┐
-└─────────┘               │
-                          │ Agent replies
-                          ▼
-                  ┌──────────────────┐
-                  │ In Resolution    │
-                  └──────────────────┘
-                          │
-                          │ Manual resolve
-                          ▼
-                  ┌──────────────────┐
-                  │   Resolved       │
-                  └──────────────────┘
-```
-
-- **Open** → **In Resolution**: Automatic when agent replies
-- **In Resolution** → **Resolved**: Manual action by agent
-- Once resolved, tickets no longer appear in the unresolved tickets list
-
----
-
 ## ⚙️ Configuration & Assumptions
 
 ### Development Assumptions
@@ -222,13 +312,92 @@ The system follows these status transition rules:
 
 ---
 
+## 🏛️ Architecture & Design Patterns
+
+The backend follows **Clean Architecture** principles with clear separation of concerns across multiple layers:
+
+### Layer Structure
+
+```
+┌─────────────────────────────────────┐
+│   API Layer (Controllers, DTOs)     │
+│   - HTTP concerns                   │
+│   - Request/Response handling       │
+└──────────────┬──────────────────────┘
+               │ depends on
+┌──────────────▼──────────────────────┐
+│   Services Layer (Business Logic)   │
+│   - Business rules                  │
+│   - Status transitions              │
+│   - Domain orchestration            │
+└──────────────┬──────────────────────┘
+               │ depends on
+┌──────────────▼──────────────────────┐
+│   Data Layer (Repositories, EF)     │
+│   - Data access abstraction         │
+│   - Database operations             │
+└──────────────┬──────────────────────┘
+               │ depends on
+┌──────────────▼──────────────────────┐
+│   Domain Layer (Entities, Enums)    │
+│   - Core business entities          │
+│   - No external dependencies        │
+└─────────────────────────────────────┘
+```
+
+### Design Patterns Implemented
+
+#### 1. **Repository Pattern**
+- ✅ Interfaces (`ITicketRepository`, `IReplyRepository`) abstract data access
+- ✅ Implementations (`TicketRepository`, `ReplyRepository`) handle Entity Framework operations
+- ✅ Enables easy testing and database swapping
+
+#### 2. **Service Layer Pattern**
+- ✅ Business logic centralized in `TicketService`
+- ✅ Controllers delegate to services, not repositories
+- ✅ Business rules (e.g., status transitions) encapsulated in services
+
+#### 3. **Dependency Injection**
+- ✅ All dependencies registered in `Program.cs`
+- ✅ Constructor injection throughout the application
+- ✅ Interfaces used for all dependencies (loose coupling)
+
+#### 4. **DTO Pattern**
+- ✅ Separate DTOs (`TicketDto`, `CreateTicketDto`) for API contracts
+- ✅ Domain entities kept separate from API layer
+- ✅ Mapping between DTOs and entities in controllers
+
+### Principles Applied
+
+- ✅ **Separation of Concerns** - Each layer has a single, well-defined responsibility
+- ✅ **Dependency Inversion** - High-level modules depend on abstractions (interfaces)
+- ✅ **Single Responsibility** - Each class has one reason to change
+- ✅ **Interface Segregation** - Focused, cohesive interfaces
+- ✅ **Open/Closed Principle** - Open for extension, closed for modification
+
+### Example Flow
+
+```
+HTTP Request
+    ↓
+TicketsController (API Layer)
+    ↓ uses ITicketService
+TicketService (Business Logic)
+    ↓ uses ITicketRepository
+TicketRepository (Data Access)
+    ↓ uses ApplicationDbContext
+SQLite Database
+```
+
+---
+
 ## 🎨 Code Quality
 
-- ✅ **Clean Code Principles** - Clear separation of concerns, single responsibility
-- ✅ **Design Patterns** - Repository pattern, Service layer, Dependency Injection
+- ✅ **Clean Architecture** - Multi-layer architecture with clear separation of concerns
+- ✅ **Design Patterns** - Repository pattern, Service layer, Dependency Injection, DTOs
 - ✅ **Documentation** - Inline XML comments for public APIs
 - ✅ **Testing** - Unit tests for core business logic with 100% coverage of status update rules
-- ✅ **Type Safety** - Full TypeScript coverage in frontend
+- ✅ **Type Safety** - Full TypeScript coverage in frontend, strong typing in C#
 - ✅ **Code Formatting** - Prettier for consistent code style
 - ✅ **Linting** - ESLint for code quality
 
@@ -265,8 +434,8 @@ Potential improvements for production:
 ## 📚 Documentation
 
 - [Frontend README](./frontend/README.md) - Detailed frontend documentation
+- [React Query Guide](./frontend/REACT_QUERY.md) - Complete guide to state management with React Query
 - [Deployment Guide](./DEPLOYMENT.md) - Complete guide for deploying and sharing the application
-- [Remote Development Guide](./REMOTE_DEVELOPMENT.md) - Develop on iOS/mobile devices (GitHub Codespaces, Remote Desktop, etc.)
 - [Backend API Documentation](http://localhost:5000/swagger) - Available when backend is running
 
 ---

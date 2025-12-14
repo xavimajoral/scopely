@@ -1,0 +1,31 @@
+services:
+  # Backend API Service
+  - type: web
+    name: support-ticketing-backend
+    env: dotnet
+    region: oregon
+    plan: free
+    buildCommand: cd backend && dotnet restore && dotnet publish -c Release -o ./publish
+    startCommand: cd backend/publish && dotnet SupportTicketingSystem.Api.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: RENDER_DISK_PATH
+        value: /opt/render/project/src/backend/SupportTicketingSystem.Api
+    disk:
+      name: support-tickets-db
+      mountPath: /opt/render/project/src/backend/SupportTicketingSystem.Api
+      sizeGB: 1
+
+  # Frontend Static Site
+  - type: web
+    name: support-ticketing-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && pnpm install && pnpm build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+
