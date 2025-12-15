@@ -18,7 +18,15 @@ builder.Services.AddControllers()
             new JsonStringEnumConverter(namingPolicy: new UpperSnakeCaseNamingPolicy()));
     });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo 
+    { 
+        Title = "Support Ticketing System API", 
+        Version = "v1" 
+    });
+});
+
 
 // Configure CORS for frontend
 var allowedOrigins = new List<string>
@@ -64,9 +72,13 @@ builder.Services.AddScoped<IReplyRepository, ReplyRepository>();
 // Register services
 builder.Services.AddScoped<ITicketService, TicketService>();
 
-// Configure port for Render (Render sets PORT environment variable)
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+// Configure port for Render (only override if PORT env var is set)
+// Otherwise, let launchSettings.json handle the port configuration
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
 
 var app = builder.Build();
 
@@ -78,10 +90,15 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline
+// Enable Swagger in Development mode (must be before UseAuthorization)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Support Ticketing System API v1");
+        c.RoutePrefix = "swagger";
+    });
 }
 else
 {
@@ -90,8 +107,6 @@ else
 
 // Enable CORS
 app.UseCors("AllowFrontend");
-
-app.UseAuthorization();
 
 app.MapControllers();
 
