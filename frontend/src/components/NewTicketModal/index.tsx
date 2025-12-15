@@ -8,7 +8,7 @@ import styles from './NewTicketModal.module.css';
 interface NewTicketModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onTicketCreated: () => void;
+  onTicketCreated: (ticketId: number) => void;
 }
 
 const NewTicketModal: React.FC<NewTicketModalProps> = ({ isOpen, onClose, onTicketCreated }) => {
@@ -23,14 +23,14 @@ const NewTicketModal: React.FC<NewTicketModalProps> = ({ isOpen, onClose, onTick
     mutationFn: async (dto: CreateTicketDto) => {
       return await apiService.createTicket(dto);
     },
-    onSuccess: () => {
+    onSuccess: (createdTicket) => {
       // Invalidate and refetch the tickets list to show the new ticket
       queryClient.invalidateQueries({ queryKey: ['unresolvedTickets'] });
       setFormData({
         subject: '',
         description: '',
       });
-      onTicketCreated();
+      onTicketCreated(createdTicket.id);
       onClose();
     },
     onError: (error) => {

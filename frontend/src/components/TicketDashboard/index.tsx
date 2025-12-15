@@ -62,6 +62,11 @@ function TicketDashboard() {
     }
   };
 
+  const handleTicketCreated = (ticketId: number) => {
+    queryClient.invalidateQueries({ queryKey: ['unresolvedTickets'] });
+    navigate(`/tickets/${ticketId}`);
+  };
+
   if (isPending) {
     return (
       <div className={styles.loading}>
@@ -99,12 +104,13 @@ function TicketDashboard() {
           ticket={selectedTicket || null}
           onTicketUpdated={handleTicketUpdated}
           onTicketResolved={() => navigate('/')}
+          hasTickets={(tickets || []).length > 0}
         />
       </div>
       <NewTicketModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onTicketCreated={handleTicketUpdated}
+        onTicketCreated={handleTicketCreated}
       />
     </div>
   );

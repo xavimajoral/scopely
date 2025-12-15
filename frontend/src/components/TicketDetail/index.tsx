@@ -11,6 +11,7 @@ interface TicketDetailProps {
   ticket: Ticket | null;
   onTicketUpdated: () => void;
   onTicketResolved?: () => void;
+  hasTickets?: boolean;
 }
 
 const AGENT_AVATAR_URL = 'https://api.dicebear.com/9.x/avataaars/svg?seed=Luis';
@@ -19,6 +20,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
   ticket,
   onTicketUpdated,
   onTicketResolved,
+  hasTickets = true,
 }) => {
   const queryClient = useQueryClient();
   const [isResolveModalOpen, setIsResolveModalOpen] = useState(false);
@@ -46,7 +48,9 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
   if (!ticket || (ticket.status as TicketStatus) === TicketStatus.Resolved) {
     return (
       <div className={`${styles.ticketDetail} ${styles.empty}`}>
-        <div className={styles.emptyState}>Select a ticket to view details</div>
+        <div className={styles.emptyState}>
+          {hasTickets ? 'Select a ticket to view details' : 'Please create your first ticket'}
+        </div>
       </div>
     );
   }
