@@ -205,6 +205,36 @@ pnpm test:e2e:headed
 
 **Note:** E2E tests automatically start the frontend dev server, but the backend must be running on `http://localhost:5000`.
 
+#### Local Integration Check
+
+Run all checks (lint, test, build, e2e) locally before pushing:
+
+```bash
+cd frontend
+
+# Run full integration check
+pnpm integration
+```
+
+This script runs:
+1. ✅ **Lint** - ESLint code quality checks
+2. ✅ **Tests** - Unit and integration tests
+3. ✅ **Build** - Production build verification
+4. ✅ **E2E Tests** - End-to-end tests (requires backend running)
+
+#### Git Pre-Push Hook
+
+A Git pre-push hook automatically runs integration checks before each push. If checks fail, the push is prevented.
+
+**How it works:**
+- The hook runs automatically on `git push`
+- If integration checks pass → push proceeds
+- If integration checks fail → push is blocked
+
+**To skip the hook (not recommended):**
+```bash
+git push --no-verify
+```
 ---
 
 ## ✨ Key Features
