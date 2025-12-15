@@ -1,6 +1,4 @@
-import { setupServer } from 'msw/node';
-import { handlers } from './handlers';
-
-// Setup MSW server for Node.js (used in tests)
-export const server = setupServer(...handlers);
+// MSW server is now initialized in setup.ts to avoid SSR transformation issues
+// This file is kept for backwards compatibility but server is initialized dynamically
+export {};
 

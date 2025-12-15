@@ -3,10 +3,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ReplyForm from './index';
-import type { Ticket, CreateReplyDto } from '@/types';
-import { TicketStatus } from '@/types';
+import type { Ticket } from '../../types';
+import { TicketStatus } from '../../types';
 import { http, HttpResponse } from 'msw';
-import { server } from '@/test/mocks/server';
+import { server } from '../../test/setup';
+import React from 'react';
 
 const mockTicket: Ticket = {
   id: 1,
@@ -35,7 +36,9 @@ const createTestWrapper = () => {
 describe('ReplyForm Integration Tests', () => {
   beforeEach(() => {
     // Reset MSW handlers before each test
-    server.resetHandlers();
+    if (server) {
+      server.resetHandlers();
+    }
   });
 
   it('should submit a reply and update the ticket', async () => {
@@ -44,24 +47,35 @@ describe('ReplyForm Integration Tests', () => {
 
     // Mock the reply endpoint
     let replySubmitted = false;
-    server.use(
-      http.post('http://localhost:5000/api/tickets/1/replies', async ({ request }) => {
-        replySubmitted = true;
-        const body = (await request.json()) as CreateReplyDto;
-        return HttpResponse.json(
-          {
-            id: 1,
-            ticketId: 1,
-            message: body.message,
-            username: body.username,
-            userId: body.userId,
-            isFromAgent: body.isFromAgent,
-            createdAt: new Date().toISOString(),
-          },
-          { status: 201 }
-        );
-      })
-    );
+    if (server) {
+      server.use(
+        http.post('http://localhost:5000/api/tickets/1/replies', async ({ request }) => {
+          replySubmitted = true;
+          const body = await request.json();
+          if (
+            !body ||
+            typeof body !== 'object' ||
+            !body.message ||
+            !body.username ||
+            typeof body.isFromAgent !== 'boolean'
+          ) {
+            return HttpResponse.json({ error: 'Invalid input' }, { status: 400 });
+          }
+          return HttpResponse.json(
+            {
+              id: 1,
+              ticketId: 1,
+              message: body.message,
+              username: body.username,
+              userId: body.userId,
+              isFromAgent: body.isFromAgent,
+              createdAt: new Date().toISOString(),
+            },
+            { status: 201 }
+          );
+        })
+      );
+    }
 
     render(<ReplyForm ticket={mockTicket} onTicketUpdated={onTicketUpdated} />, {
       wrapper: createTestWrapper(),
@@ -92,23 +106,25 @@ describe('ReplyForm Integration Tests', () => {
     const onTicketUpdated = vi.fn();
 
     let replySubmitted = false;
-    server.use(
-      http.post('http://localhost:5000/api/tickets/1/replies', async () => {
-        replySubmitted = true;
-        return HttpResponse.json(
-          {
-            id: 1,
-            ticketId: 1,
-            message: 'Test reply',
-            username: 'CS Agent',
-            userId: 'agent001',
-            isFromAgent: true,
-            createdAt: new Date().toISOString(),
-          },
-          { status: 201 }
-        );
-      })
-    );
+    if (server) {
+      server.use(
+        http.post('http://localhost:5000/api/tickets/1/replies', async () => {
+          replySubmitted = true;
+          return HttpResponse.json(
+            {
+              id: 1,
+              ticketId: 1,
+              message: 'Test reply',
+              username: 'CS Agent',
+              userId: 'agent001',
+              isFromAgent: true,
+              createdAt: new Date().toISOString(),
+            },
+            { status: 201 }
+          );
+        })
+      );
+    }
 
     render(<ReplyForm ticket={mockTicket} onTicketUpdated={onTicketUpdated} />, {
       wrapper: createTestWrapper(),
@@ -116,13 +132,16 @@ describe('ReplyForm Integration Tests', () => {
 
     const textarea = screen.getByPlaceholderText(/type your reply/i);
     await user.type(textarea, 'Reply via keyboard shortcut');
-    
+
     // Use keyboard shortcut - Ctrl+Enter (or Cmd+Enter on Mac)
     await user.keyboard('{Control>}{Enter}{/Control}');
 
-    await waitFor(() => {
-      expect(replySubmitted).toBe(true);
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(replySubmitted).toBe(true);
+      },
+      { timeout: 5000 }
+    );
 
     await waitFor(() => {
       expect(onTicketUpdated).toHaveBeenCalled();
@@ -134,11 +153,13 @@ describe('ReplyForm Integration Tests', () => {
     const onTicketUpdated = vi.fn();
 
     // Mock error response
-    server.use(
-      http.post('http://localhost:5000/api/tickets/1/replies', () => {
-        return HttpResponse.json({ error: 'Failed to add reply' }, { status: 500 });
-      })
-    );
+    if (server) {
+      server.use(
+        http.post('http://localhost:5000/api/tickets/1/replies', () => {
+          return HttpResponse.json({ error: 'Failed to add reply' }, { status: 500 });
+        })
+      );
+    }
 
     // Mock window.alert
     const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
@@ -159,4 +180,3 @@ describe('ReplyForm Integration Tests', () => {
     alertSpy.mockRestore();
   });
 });
-

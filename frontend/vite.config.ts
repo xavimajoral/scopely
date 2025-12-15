@@ -21,7 +21,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
-    css: true,
+    css: {
+      modules: {
+        classNameStrategy: 'non-scoped',
+      },
+    },
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
@@ -29,5 +33,10 @@ export default defineConfig({
       '**/.{idea,git,cache,output,temp}/**',
       '**/e2e/**', // Exclude Playwright E2E tests
     ],
+    server: {
+      deps: {
+        inline: ['msw'],
+      },
+    },
   },
 })
