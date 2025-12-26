@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, createMemoryRouter, RouterProvider } from 'react-router';
@@ -60,9 +60,38 @@ describe('TicketDashboard Integration Tests', () => {
     expect(loadingText || screen.queryByText('Test Ticket 1')).toBeTruthy();
   });
 
-  it.skip('should select a ticket and display its details', async () => {
-    // Render with ticket ID in URL to simulate navigation
-    render(<TicketDashboard />, { wrapper: createTestWrapper(['/tickets/1']) });
+  it('should select a ticket and display its details', async () => {
+    // Use createMemoryRouter with proper route definitions
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: { retry: false, gcTime: 0 },
+        mutations: { retry: false },
+      },
+    });
+
+    const router = createMemoryRouter(
+      [
+        {
+          path: '/',
+          element: (
+            <QueryClientProvider client={queryClient}>
+              <TicketDashboard />
+            </QueryClientProvider>
+          ),
+        },
+        {
+          path: '/tickets/:ticketId',
+          element: (
+            <QueryClientProvider client={queryClient}>
+              <TicketDashboard />
+            </QueryClientProvider>
+          ),
+        },
+      ],
+      { initialEntries: ['/tickets/1'] }
+    );
+
+    render(<RouterProvider router={router} />);
 
     // Wait for ticket details to load - check for any content from the ticket
     await waitFor(() => {
@@ -71,7 +100,7 @@ describe('TicketDashboard Integration Tests', () => {
       const description = screen.queryByText('Description 1');
       const reply = screen.queryByText('First reply');
       const emptyState = screen.queryByText('Select a ticket to view details');
-      
+
       // Should have ticket content, not empty state
       expect(emptyState).not.toBeInTheDocument();
       expect(heading || description || reply).toBeTruthy();
@@ -94,7 +123,6 @@ describe('TicketDashboard Integration Tests', () => {
 
   it('should create a new ticket and add it to the list', async () => {
     const user = userEvent.setup();
-
     let createdTicket: Ticket | null = null;
     let getCallCount = 0;
 
@@ -135,7 +163,7 @@ describe('TicketDashboard Integration Tests', () => {
       expect(screen.getByText('Test Ticket 1')).toBeInTheDocument();
     }, { timeout: 5000 });
 
-    // Open modal
+    // Open modal using userEvent for proper state updates
     const newTicketButton = screen.getByRole('button', { name: /new ticket/i });
     await user.click(newTicketButton);
 
@@ -143,17 +171,17 @@ describe('TicketDashboard Integration Tests', () => {
       expect(screen.getByText('Create New Ticket')).toBeInTheDocument();
     });
 
-    // Fill form - only subject and description (username and userId are auto-generated)
+    // Fill form using fireEvent to avoid timing issues with Modal focus trap
     const subjectInput = screen.getByLabelText(/subject/i);
     const descriptionInput = screen.getByLabelText(/description/i);
 
-    await user.clear(subjectInput);
-    await user.type(subjectInput, 'New Integration Test Ticket');
-    await user.clear(descriptionInput);
-    await user.type(descriptionInput, 'This is a test');
+    fireEvent.change(subjectInput, { target: { value: 'New Integration Test Ticket' } });
+    fireEvent.change(descriptionInput, { target: { value: 'This is a test' } });
 
-    // Submit - the button has form="new-ticket-form" attribute
-    const submitButton = screen.getByRole('button', { name: /create ticket/i });
+    // Wait for and get the submit button by text content
+    const submitButton = await waitFor(() => {
+      return screen.getByText('Create Ticket');
+    }, { timeout: 5000 });
     await user.click(submitButton);
 
     // Wait for modal to close
@@ -169,8 +197,6 @@ describe('TicketDashboard Integration Tests', () => {
   });
 
   it('should automatically navigate to ticket detail after creating a new ticket', async () => {
-    const user = userEvent.setup();
-
     let createdTicket: Ticket | null = null;
     let getCallCount = 0;
 
@@ -250,26 +276,26 @@ describe('TicketDashboard Integration Tests', () => {
     // Verify we're on the root route initially
     expect(router.state.location.pathname).toBe('/');
 
-    // Open modal
+    // Open modal using fireEvent for consistency
     const newTicketButton = screen.getByRole('button', { name: /new ticket/i });
-    await user.click(newTicketButton);
+    fireEvent.click(newTicketButton);
 
     await waitFor(() => {
       expect(screen.getByText('Create New Ticket')).toBeInTheDocument();
     });
 
-    // Fill form
+    // Fill form using fireEvent to avoid timing issues with Modal focus trap
     const subjectInput = screen.getByLabelText(/subject/i);
     const descriptionInput = screen.getByLabelText(/description/i);
 
-    await user.clear(subjectInput);
-    await user.type(subjectInput, 'Auto Navigate Test Ticket');
-    await user.clear(descriptionInput);
-    await user.type(descriptionInput, 'This ticket should auto-navigate');
+    fireEvent.change(subjectInput, { target: { value: 'Auto Navigate Test Ticket' } });
+    fireEvent.change(descriptionInput, { target: { value: 'This ticket should auto-navigate' } });
 
-    // Submit
-    const submitButton = screen.getByRole('button', { name: /create ticket/i });
-    await user.click(submitButton);
+    // Wait for and get the submit button by text content
+    const submitButton = await waitFor(() => {
+      return screen.getByText('Create Ticket');
+    }, { timeout: 5000 });
+    fireEvent.click(submitButton);
 
     // Wait for modal to close
     await waitFor(() => {

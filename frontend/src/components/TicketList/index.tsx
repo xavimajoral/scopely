@@ -39,43 +39,43 @@ const TicketList: React.FC<TicketListProps> = ({
     }
   };
 
-  const ticketList = (tickets: Ticket[]) => {
-    return tickets.map((ticket) => (
-      <div
-        key={ticket.id}
-        className={`${styles.ticketItem} ${selectedTicketId === ticket.id ? styles.selected : ''}`}
-        onClick={() => onSelectTicket(ticket)}
-      >
-        <div className={styles.ticketContent}>
-          <div className={styles.ticketSubject}>{ticket.subject}</div>
-          <div className={styles.ticketUser}>
-            {ticket.username} - {ticket.userId}
-          </div>
-        </div>
-        <div className={styles.ticketMeta}>
-          <div className={`${styles.statusBadge} ${getStatusClassName(ticket.status)}`}>
-            {getStatusText(ticket.status)}
-          </div>
-          <div className={styles.avatar}>
-            <DicebearAvatar seed={ticket.id.toString()} size={48} />
-          </div>
-        </div>
-      </div>
-    ));
-  };
-
   return (
     <div className={styles.ticketList}>
       <button className={styles.newTicketButton} onClick={onCreateNew}>
         + New ticket
       </button>
-      <div className={styles.ticketsContainer}>
+      <ul className={styles.ticketsContainer} role="listbox" aria-label="Ticket list">
         {tickets.length === 0 ? (
-          <div className={styles.noTickets}>No unresolved tickets</div>
+          <li className={styles.noTickets}>No unresolved tickets</li>
         ) : (
-          ticketList(tickets)
+          tickets.map((ticket) => (
+            <li key={ticket.id}>
+              <button
+                type="button"
+                className={`${styles.ticketItem} ${selectedTicketId === ticket.id ? styles.selected : ''}`}
+                onClick={() => onSelectTicket(ticket)}
+                aria-selected={selectedTicketId === ticket.id}
+                aria-label={`Ticket: ${ticket.subject}, Status: ${getStatusText(ticket.status)}`}
+              >
+                <div className={styles.ticketContent}>
+                  <div className={styles.ticketSubject}>{ticket.subject}</div>
+                  <div className={styles.ticketUser}>
+                    {ticket.username} - {ticket.userId}
+                  </div>
+                </div>
+                <div className={styles.ticketMeta}>
+                  <div className={`${styles.statusBadge} ${getStatusClassName(ticket.status)}`}>
+                    {getStatusText(ticket.status)}
+                  </div>
+                  <div className={styles.avatar}>
+                    <DicebearAvatar seed={ticket.id.toString()} size={48} />
+                  </div>
+                </div>
+              </button>
+            </li>
+          ))
         )}
-      </div>
+      </ul>
     </div>
   );
 };

@@ -78,7 +78,7 @@ describe('TicketList', () => {
       />
     );
 
-    const ticket = screen.getByText('Test Ticket 1').closest('div[class*="ticketItem"]');
+    const ticket = screen.getByText('Test Ticket 1').closest('button[class*="ticketItem"]');
     if (ticket) {
       await user.click(ticket);
       expect(onSelectTicket).toHaveBeenCalledWith(mockTickets[0]);
@@ -118,7 +118,7 @@ describe('TicketList', () => {
       />
     );
 
-    const ticket = screen.getByText('Test Ticket 1').closest('div[class*="ticketItem"]');
+    const ticket = screen.getByText('Test Ticket 1').closest('button[class*="ticketItem"]');
     expect(ticket).toHaveClass(/selected/);
   });
 });

@@ -28,14 +28,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-// Configure CORS for frontend
-var allowedOrigins = new List<string>
-{
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:5173",
-    "http://localhost:4200"
-};
+// Configure CORS for frontend - read from configuration
+var allowedOrigins = builder.Configuration.GetSection("CorsOrigins").Get<List<string>>() ?? new List<string>();
 
 // Add Render frontend URL if provided via environment variable
 var renderFrontendUrl = Environment.GetEnvironmentVariable("RENDER_FRONTEND_URL");
@@ -49,7 +43,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins(allowedOrigins.ToArray())
-              .AllowAnyMethod()
+              .WithMethods("GET", "POST", "OPTIONS")
               .WithHeaders("Content-Type", "Authorization")
               .AllowCredentials();
     });

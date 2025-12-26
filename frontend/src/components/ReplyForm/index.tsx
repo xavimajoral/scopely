@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Ticket, CreateReplyDto } from '@/types.ts';
 import { apiService } from '@/services/api.ts';
+import { AGENT_AVATAR_URL } from '@/constants/avatars';
 import styles from './ReplyForm.module.css';
 
 interface ReplyFormProps {
@@ -28,7 +29,6 @@ const ReplyForm: React.FC<ReplyFormProps> = ({ ticket, onTicketUpdated }) => {
     },
     onError: (error) => {
       console.error('Error adding reply:', error);
-      alert('Failed to add reply. Please try again.');
     },
   });
 
@@ -70,7 +70,7 @@ const ReplyForm: React.FC<ReplyFormProps> = ({ ticket, onTicketUpdated }) => {
       <div className={styles.replyAuthorInfo}>
         <span>CS Agent</span>
         <div className={styles.avatar}>
-          <img width={40} src="https://api.dicebear.com/9.x/avataaars/svg?seed=Luis" alt="avatar" />
+          <img width={40} src={AGENT_AVATAR_URL} alt="avatar" />
         </div>
       </div>
     </div>
@@ -78,6 +78,9 @@ const ReplyForm: React.FC<ReplyFormProps> = ({ ticket, onTicketUpdated }) => {
 
   return (
     <div className={styles.replyFormContainer}>
+      {addAgentReplyMutation.isError && (
+        <div className={styles.errorMessage}>Failed to add reply. Please try again.</div>
+      )}
       <form onSubmit={handleReplySubmit} className={styles.replyForm}>
         <textarea
           id="reply-message"

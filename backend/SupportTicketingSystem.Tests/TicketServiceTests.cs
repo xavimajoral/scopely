@@ -1,6 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
+using SupportTicketingSystem.Data;
 using SupportTicketingSystem.Data.Repositories;
 using SupportTicketingSystem.Domain;
+using SupportTicketingSystem.Domain.Exceptions;
 using SupportTicketingSystem.Services;
 using Xunit;
 
@@ -9,17 +13,39 @@ namespace SupportTicketingSystem.Tests;
 /// <summary>
 /// Unit tests for TicketService business logic
 /// </summary>
-public class TicketServiceTests
+public class TicketServiceTests : IDisposable
 {
     private readonly Mock<ITicketRepository> _ticketRepositoryMock;
     private readonly Mock<IReplyRepository> _replyRepositoryMock;
+    private readonly Mock<ILogger<TicketService>> _loggerMock;
+    private readonly ApplicationDbContext _dbContext;
     private readonly TicketService _ticketService;
 
     public TicketServiceTests()
     {
         _ticketRepositoryMock = new Mock<ITicketRepository>();
         _replyRepositoryMock = new Mock<IReplyRepository>();
-        _ticketService = new TicketService(_ticketRepositoryMock.Object, _replyRepositoryMock.Object);
+        _loggerMock = new Mock<ILogger<TicketService>>();
+
+        // Use in-memory SQLite database for testing transactions
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseSqlite("DataSource=:memory:")
+            .Options;
+        _dbContext = new ApplicationDbContext(options);
+        _dbContext.Database.OpenConnection();
+        _dbContext.Database.EnsureCreated();
+
+        _ticketService = new TicketService(
+            _ticketRepositoryMock.Object,
+            _replyRepositoryMock.Object,
+            _dbContext,
+            _loggerMock.Object);
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.CloseConnection();
+        _dbContext.Dispose();
     }
 
     [Fact]
@@ -104,7 +130,7 @@ public class TicketServiceTests
             .ReturnsAsync((Ticket?)null);
 
         // Act & Assert
-        await Assert.ThrowsAsync<ArgumentException>(() => _ticketService.ResolveTicketAsync(ticketId));
+        await Assert.ThrowsAsync<TicketNotFoundException>(() => _ticketService.ResolveTicketAsync(ticketId));
     }
 
     [Fact]
@@ -272,7 +298,7 @@ public class TicketServiceTests
             .ReturnsAsync((Ticket?)null);
 
         // Act & Assert
-        await Assert.ThrowsAsync<ArgumentException>(() =>
+        await Assert.ThrowsAsync<TicketNotFoundException>(() =>
             _ticketService.AddReplyAsync(ticketId, "Message", "User", "123", false)
         );
     }

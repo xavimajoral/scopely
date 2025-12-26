@@ -161,9 +161,6 @@ describe('ReplyForm Integration Tests', () => {
       );
     }
 
-    // Mock window.alert
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-
     render(<ReplyForm ticket={mockTicket} onTicketUpdated={onTicketUpdated} />, {
       wrapper: createTestWrapper(),
     });
@@ -172,11 +169,9 @@ describe('ReplyForm Integration Tests', () => {
     await user.type(textarea, 'This will fail');
     await user.click(screen.getByRole('button', { name: /send/i }));
 
-    // Should show alert on error
+    // Should show inline error message
     await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Failed to add reply. Please try again.');
+      expect(screen.getByText('Failed to add reply. Please try again.')).toBeInTheDocument();
     });
-
-    alertSpy.mockRestore();
   });
 });

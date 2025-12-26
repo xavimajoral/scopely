@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SupportTicketingSystem.Api.DTOs;
 using SupportTicketingSystem.Domain;
+using SupportTicketingSystem.Domain.Exceptions;
 using SupportTicketingSystem.Services;
 
 namespace SupportTicketingSystem.Api.Controllers;
@@ -95,9 +96,13 @@ public class TicketsController : ControllerBase
             var ticket = await _ticketService.ResolveTicketAsync(id);
             return Ok(MapToDto(ticket));
         }
-        catch (ArgumentException ex)
+        catch (TicketNotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
@@ -128,9 +133,13 @@ public class TicketsController : ControllerBase
                 MapToDto(reply)
             );
         }
-        catch (ArgumentException ex)
+        catch (TicketNotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {

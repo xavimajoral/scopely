@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TicketStatus, type Ticket } from '@/types.ts';
 import { apiService } from '@/services/api.ts';
+import { AGENT_AVATAR_URL } from '@/constants/avatars';
 import { DicebearAvatar } from '@/components/DicebearAvatar';
 import ReplyForm from '@/components/ReplyForm';
 import ConfirmModal from '@/components/ConfirmModal';
@@ -13,8 +14,6 @@ interface TicketDetailProps {
   onTicketResolved?: () => void;
   hasTickets?: boolean;
 }
-
-const AGENT_AVATAR_URL = 'https://api.dicebear.com/9.x/avataaars/svg?seed=Luis';
 
 const TicketDetail: React.FC<TicketDetailProps> = ({
   ticket,
@@ -41,7 +40,6 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
     },
     onError: (error) => {
       console.error('Error resolving ticket:', error);
-      alert('Failed to resolve ticket. Please try again.');
     },
   });
 
@@ -102,6 +100,9 @@ const TicketDetail: React.FC<TicketDetailProps> = ({
   return (
     <div className={styles.ticketDetail}>
       {ticketHeader}
+      {resolveTicketMutation.isError && (
+        <div className={styles.errorMessage}>Failed to resolve ticket. Please try again.</div>
+      )}
       <div className={styles.repliesThread}>
         {allMessages.map((item) => {
           const isAgent = item.isFromAgent;

@@ -80,3 +80,12 @@
     transform: translateY(0.3rem);
   }
 }
+
+.errorMessage {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 1rem 1.6rem;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
+}

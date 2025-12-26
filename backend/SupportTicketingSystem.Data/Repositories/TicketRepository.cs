@@ -39,7 +39,7 @@ public class TicketRepository : ITicketRepository
 
     public async Task<Ticket> UpdateTicketAsync(Ticket ticket)
     {
-        ticket.UpdatedAt = DateTime.UtcNow;
+        // Note: UpdatedAt should be set by the service layer before calling this method
         _context.Tickets.Update(ticket);
         await _context.SaveChangesAsync();
         return ticket;

@@ -39,6 +39,11 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.UpdatedAt).IsRequired();
 
+            // Index for faster queries on Status (used in GetUnresolvedTicketsAsync)
+            entity.HasIndex(e => e.Status);
+            // Composite index for filtering by status and ordering by date
+            entity.HasIndex(e => new { e.Status, e.CreatedAt });
+
             // Configure relationship with Replies
             entity.HasMany(e => e.Replies)
                   .WithOne(e => e.Ticket)
